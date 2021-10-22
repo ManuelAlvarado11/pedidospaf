@@ -18,10 +18,10 @@
             <td>{{ pedido.cot_cliente }}</td>
             <td>{{ pedido.cot_total }}</td>
             <td>
-                <i class="far fa-edit fa-lg text-info" style="cursor: pointer;"></i>
+                <i class="far fa-edit fa-lg text-info" (click)="editar(pedido)" style="cursor: pointer;"></i>
             </td>
             <td>
-                <i class="far fa-trash-alt fa-lg text-danger" style="cursor: pointer;"></i>
+                <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero,pedido.cot_pedido)" style="cursor: pointer;"></i>
             </td>
         </tr>
     </tbody>

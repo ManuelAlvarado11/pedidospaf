@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PedidoService } from 'src/app/services/pedido.service';
 
 @Component({
   selector: 'app-pedido-listar',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PedidoListarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public pedidoService: PedidoService) { }
 
   ngOnInit(): void {
+    this.pedidoService.obtenerPedidos();
   }
 
 }

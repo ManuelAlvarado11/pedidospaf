@@ -42,6 +42,7 @@ export class PedidoCrearComponent implements OnInit {
 
     this.pedidoService.guardarPedido(pedido).subscribe(data => {
       this.toastr.success('Registro Agregado', 'Pedido Agregado Exitosamente');
+      this.pedidoService.obtenerPedidos();
       this.form.reset();
     });
   }

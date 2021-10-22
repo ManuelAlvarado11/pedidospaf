@@ -1,1 +1,29 @@
-<p>pedido-listar works!</p>
+<table class="table table-striped">
+    <thead> 
+        <th>Empresa</th>
+        <th>Numero</th>
+        <th>Pedido</th>
+        <th>Vendedor</th>
+        <th>Bodega</th>
+        <th>Cliente</th>
+        <th>Total</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let pedido of pedidoService.list">
+            <td>{{ pedido.cot_empresa }}</td>
+            <td>{{ pedido.cot_numero }}</td>
+            <td>{{ pedido.cot_pedido }}</td>
+            <td>{{ pedido.cot_vendedor }}</td>
+            <td>{{ pedido.cot_bodega }}</td>
+            <td>{{ pedido.cot_cliente }}</td>
+            <td>{{ pedido.cot_total }}</td>
+            <td>
+                <i class="far fa-edit fa-lg text-info" style="cursor: pointer;"></i>
+            </td>
+            <td>
+                <i class="far fa-trash-alt fa-lg text-danger" style="cursor: pointer;"></i>
+            </td>
+        </tr>
+    </tbody>
+    
+</table>

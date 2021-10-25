@@ -11,6 +11,9 @@ import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { PedidoCrearComponent } from './components/pedidos/pedido-crear/pedido-crear.component';
 import { PedidoListarComponent } from './components/pedidos/pedido-listar/pedido-listar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ContentComponent } from './components/content/content.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { FooterComponent } from './components/footer/footer.component';
     PedidosComponent,
     PedidoCrearComponent,
     PedidoListarComponent,
-    FooterComponent
+    FooterComponent,
+    NavbarComponent,
+    SidebarComponent,
+    ContentComponent
   ],
   imports: [
     BrowserModule,

@@ -1,29 +1,34 @@
-<table class="table table-striped">
-    <thead> 
-        <th>Empresa</th>
-        <th>Numero</th>
-        <th>Pedido</th>
-        <th>Vendedor</th>
-        <th>Bodega</th>
-        <th>Cliente</th>
-        <th>Total</th>
-    </thead>
-    <tbody>
-        <tr *ngFor="let pedido of pedidoService.list">
-            <td>{{ pedido.cot_empresa }}</td>
-            <td>{{ pedido.cot_numero }}</td>
-            <td>{{ pedido.cot_pedido }}</td>
-            <td>{{ pedido.cot_vendedor }}</td>
-            <td>{{ pedido.cot_bodega }}</td>
-            <td>{{ pedido.cot_cliente }}</td>
-            <td>{{ pedido.cot_total }}</td>
-            <td>
-                <i class="far fa-edit fa-lg text-info" (click)="editar(pedido)" style="cursor: pointer;"></i>
-            </td>
-            <td>
-                <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero,pedido.cot_pedido)" style="cursor: pointer;"></i>
-            </td>
-        </tr>
-    </tbody>
-    
-</table>
+<div class="col-12 col-lg-7 col-xxl-8 d-flex">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Registro de pedidos</h5>
+        </div>
+        <table class="table table-hover my-0">
+            <thead> 
+                <th>Numero</th>
+                <th>Pedido</th>
+                <th>Vendedor</th>
+                <th>Bodega</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pedido of pedidoService.list">
+                    <td>{{ pedido.cot_numero }}</td>
+                    <td>{{ pedido.cot_pedido }}</td>
+                    <td>{{ pedido.cot_vendedor }}</td>
+                    <td>{{ pedido.cot_bodega }}</td>
+                    <td>{{ pedido.cot_cliente }}</td>
+                    <td>{{ pedido.cot_total }}</td>
+                    <td><span class="badge bg-success">Done</span></td>
+                    <td>
+                        <i class="far fa-edit fa-lg text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i>
+                        <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero,pedido.cot_pedido)" style="cursor: pointer;"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

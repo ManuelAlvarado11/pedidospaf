@@ -1,45 +1,57 @@
-<form [formGroup]="form" (ngSubmit)="guardarPedido()">
-    <div class="form-group">
-        <div class="mb-3">
-            <label for="cot_empresa" class="form-label">Empresa</label>
-            <input type="text" id="cot_empresa" class="form-control" formControlName="cot_empresa" placeholder="Codigo Cliente" maxlength="6">
-        </div>  
-        <div class="mb-3">
-            <label for="cot_numero" class="form-label">Numero Pedido</label>
-            <input type="text" id="cot_numero" class="form-control" formControlName="cot_numero" placeholder="Numero de pedido" maxlength="10">
+<div class="col-12 col-lg-4 col-xxl-3 d-flex">
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Gestionar Pedido</h5>
         </div>
-        <div class="mb-3">
-            <label for="cot_pedido" class="form-label">Pedido</label>
-            <input type="text" id="cot_pedido" class="form-control" formControlName="cot_pedido" placeholder="Pedido" maxlength="6">
-        </div>
-        <div class="mb-3">
-            <label for="cot_cliente" class="form-label">Cliente</label>
-            <input type="text" id="cot_cliente" class="form-control" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10">
-        </div>
-        <div class="mb-3">
-            <label for="cot_vendedor" class="form-label">Vendedor</label>
-            <input type="text" id="cot_vendedor" class="form-control" formControlName="cot_vendedor" placeholder="Codigo vendedor" maxlength="10">
-        </div>
-        <div class="mb-3">
-            <label for="cot_total" class="form-label">Total</label>
-            <input type="number" id="cot_total" class="form-control" formControlName="cot_total" placeholder="Total Pedido" max="5000">
-        </div>
-        <div class="mb-3">
-            <label for="cot_bodega" class="form-label">Bodega</label>
-            <select id="cot_bodega" class="form-select" formControlName="cot_bodega">
-            <option>01</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="check_factura">
-            <label class="form-check-label" for="check_factura">
-                Pedido Facturado
-            </label>
+        <div class="card-body d-flex w-100">
+            <div class="align-self-center chart chart-lg">
+                <form [formGroup]="form" (ngSubmit)="guardarPedido()">
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="cot_empresa" class="form-label">Empresa</label>
+                            <input type="text" id="cot_empresa" class="form-control" formControlName="cot_empresa" placeholder="Codigo Cliente" maxlength="6">
+                        </div>  
+                        <div class="mb-3">
+                            <label for="cot_numero" class="form-label">Numero Pedido</label>
+                            <input type="text" id="cot_numero" class="form-control" formControlName="cot_numero" placeholder="Numero de pedido" maxlength="10">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cot_pedido" class="form-label">Pedido</label>
+                            <input type="text" id="cot_pedido" class="form-control" formControlName="cot_pedido" placeholder="Pedido" maxlength="6">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cot_cliente" class="form-label">Cliente</label>
+                            <input type="text" id="cot_cliente" class="form-control" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cot_vendedor" class="form-label">Vendedor</label>
+                            <input type="text" id="cot_vendedor" class="form-control" formControlName="cot_vendedor" placeholder="Codigo vendedor" maxlength="10">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cot_total" class="form-label">Total</label>
+                            <input type="number" id="cot_total" class="form-control" formControlName="cot_total" placeholder="Total Pedido" max="5000">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cot_bodega" class="form-label">Bodega</label>
+                            <select id="cot_bodega" class="form-select" formControlName="cot_bodega">
+                            <option>01</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check_factura">
+                            <label class="form-check-label" for="check_factura">
+                                Pedido Facturado
+                            </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fas fa-database"></i> Aceptar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="mb-3">
-            <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fas fa-database"></i> Aceptar</button>
-        </div>
     </div>
-</form>
+</div>
+

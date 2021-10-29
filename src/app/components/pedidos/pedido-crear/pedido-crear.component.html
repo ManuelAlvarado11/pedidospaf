@@ -24,7 +24,7 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
-                                    <form [formGroup]="form" (ngSubmit)="guardarPedido()">
+                                    <form [formGroup]="formPedido" (ngSubmit)="guardarPedido()">
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
@@ -102,27 +102,27 @@
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_producto" class="form-label">Producto</label>
-                                                    <input type="text"  class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="" maxlength="6">
+                                                    <input type="text"  class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo de producto" maxlength="6">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_cantidad" class="form-label">Cantidad</label>
-                                                    <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="" >
+                                                    <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" step='0.01' value='0.00' placeholder='0.00' >
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_precio_descuento" class="form-label">Precio</label>
-                                                    <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="">
+                                                    <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" step='0.01' value='0.00' placeholder='0.00'>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_costo" class="form-label">Costo</label>
-                                                    <input type="number"  class="form-control" id="dct_costo" formControlName="dct_costo" placeholder="" >
+                                                    <input type="number"  class="form-control" id="dct_costo" formControlName="dct_costo" step='0.01' value='0.00' placeholder='0.00' >
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_total" class="form-label">Total</label>
-                                                    <input type="number" class="form-control" id="dct_total" formControlName="dct_total" placeholder="Total Pedido" max="5000">
+                                                    <input type="number" class="form-control" id="dct_total" formControlName="dct_total" step='0.01' value='0.00' placeholder='0.00'>
                                                 </div>
                                             </div>  
                                             <br>
@@ -133,9 +133,9 @@
                                             </div>
                                         </div>  
                                     </form>  
+                                    <br><br>
                                     <div>
-                                        <h5>Detalle</h5>
-                                        <table>
+                                        <table class="table table-hover my-0">
                                             <tr>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>

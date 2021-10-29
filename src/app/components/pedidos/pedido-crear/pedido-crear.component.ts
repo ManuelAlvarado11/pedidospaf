@@ -11,31 +11,33 @@ import { PedidoService } from 'src/app/services/pedido.service';
   templateUrl: './pedido-crear.component.html',
   styleUrls: ['./pedido-crear.component.css']
 })
+
 export class PedidoCrearComponent implements OnInit, OnDestroy {
-  form: FormGroup;
+  
+  //Inicializacion de variables
+  formPedido: FormGroup;
   formDetalle: FormGroup;
   subscription!: Subscription;
   pedido!: Pedido;
   detalle_pedidos!: Detalle_pedido[];
   cot_empresa = "";cot_numero = "";cot_pedido="";
 
-
-  constructor(private formBuilder: FormBuilder, 
-              private pedidoService: PedidoService,
-              private toastr: ToastrService) { 
-    this.form = this.formBuilder.group({
+  //Contructor PedidoCrearComponent
+  constructor(private formBuilder: FormBuilder, private pedidoService: PedidoService,private toastr: ToastrService) { 
+    
+    this.formPedido = this.formBuilder.group({
       cot_empresa: ['',[Validators.required,Validators.maxLength(25)]],
       cot_numero: ['',[Validators.required,Validators.maxLength(25)]],
       cot_pedido: ['',[Validators.required,Validators.maxLength(25)]],
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
-      cot_gravada: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_iva: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_retencion: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_total: [0.00,[Validators.required,Validators.max(10000)]]   
+      cot_gravada: ['',[Validators.required,Validators.min(0)]],
+      cot_iva: ['',[Validators.required,Validators.min(0)]],
+      cot_exenta: ['',[Validators.required,Validators.min(0)]],
+      cot_retencion: ['',[Validators.required,Validators.min(0)]],
+      cot_descuento: ['',[Validators.required,Validators.min(0)]],
+      cot_total: ['',[Validators.required,Validators.min(0)]]   
     });
 
     this.formDetalle = this.formBuilder.group({
@@ -43,23 +45,23 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_numero_detalle: ['',[Validators.required,Validators.maxLength(25)]],
       dct_cotizacion: ['',[Validators.required,Validators.maxLength(25)]],
       dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
-      dct_cantidad: [0,[Validators.required,Validators.max(10000)]],
-      dct_precio_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_gravada: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_iva: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_total: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_costo: [0.00,[Validators.required,Validators.max(10000)]]      
+      dct_cantidad: ['',[Validators.required,Validators.min(0)]],
+      dct_precio_descuento: ['',[Validators.required,Validators.min(0)]],
+      dct_gravada: ['',[Validators.required,Validators.min(0)]],
+      dct_exenta: ['',[Validators.required,Validators.min(0)]],
+      dct_iva: ['',[Validators.required,Validators.min(0)]],
+      dct_descuento: ['',[Validators.required,Validators.min(0)]],
+      dct_total: ['',[Validators.required,Validators.min(0)]],
+      dct_costo: ['',[Validators.required,Validators.min(0)]]      
     });
   }
 
   ngOnInit(): void {
+    //Cargar pedido en Formulario
     this.pedidoService.obtenerPedido().subscribe(data => { 
       this.pedido =data;
-      this.detalle_pedidos = [];
-      this.form.patchValue({
+      this.detalle_pedidos = this.pedido.detalles;
+      this.formPedido.patchValue({
         cot_empresa: this.pedido.cot_empresa,
         cot_numero: this.pedido.cot_numero,
         cot_pedido: this.pedido.cot_pedido,
@@ -69,6 +71,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         cot_bodega: this.pedido.cot_bodega,
       });
 
+      //Obtener Llave Pedido
       this.cot_empresa = this.pedido.cot_empresa;
       this.cot_numero = this.pedido.cot_numero;
       this.cot_pedido = this.pedido.cot_pedido;
@@ -91,48 +94,43 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   agregar(){
     const pedido: Pedido = {
-      cot_empresa: this.form.get('cot_empresa')!.value,
-      cot_numero: this.form.get('cot_numero')!.value,
-      cot_pedido: this.form.get('cot_pedido')!.value,
-      cot_vendedor: this.form.get('cot_vendedor')!.value,
-      cot_bodega: this.form.get('cot_bodega')!.value,
-      cot_cliente: this.form.get('cot_cliente')!.value,
+      cot_empresa: this.formPedido.get('cot_empresa')!.value,
+      cot_numero: this.formPedido.get('cot_numero')!.value,
+      cot_pedido: this.formPedido.get('cot_pedido')!.value,
+      cot_vendedor: this.formPedido.get('cot_vendedor')!.value,
+      cot_bodega: this.formPedido.get('cot_bodega')!.value,
+      cot_cliente: this.formPedido.get('cot_cliente')!.value,
       cot_gravada: 0,
       cot_iva: 0,
       cot_exenta: 0,
       cot_retencion: 0,
       cot_descuento: 0,
-      cot_total: this.form.get('cot_total')!.value,
+      cot_total: this.formPedido.get('cot_total')!.value,
       cot_anulada: false,
       detalles: this.detalle_pedidos
     }
-
+    console.log(pedido);
     this.pedidoService.guardarPedido(pedido).subscribe(data => {
       this.toastr.success('Registro Agregado', 'Pedido Agregado Exitosamente');
       this.pedidoService.obtenerPedidos();
-      this.form.reset();
+      this.formPedido.reset();
     });
-  }
-
-  agregarDetalle(){
-    console.log(this.formDetalle.value);
-    this.detalle_pedidos.push(this.formDetalle.value);
   }
 
   editar(){
     const pedido: Pedido = {
-      cot_empresa: this.form.get('cot_empresa')!.value,
-      cot_numero: this.form.get('cot_numero')!.value,
-      cot_pedido: this.form.get('cot_pedido')!.value,
-      cot_vendedor: this.form.get('cot_vendedor')!.value,
-      cot_bodega: this.form.get('cot_bodega')!.value,
-      cot_cliente: this.form.get('cot_cliente')!.value,
+      cot_empresa: this.formPedido.get('cot_empresa')!.value,
+      cot_numero: this.formPedido.get('cot_numero')!.value,
+      cot_pedido: this.formPedido.get('cot_pedido')!.value,
+      cot_vendedor: this.formPedido.get('cot_vendedor')!.value,
+      cot_bodega: this.formPedido.get('cot_bodega')!.value,
+      cot_cliente: this.formPedido.get('cot_cliente')!.value,
       cot_gravada: 0,
       cot_iva: 0,
       cot_exenta: 0,
       cot_retencion: 0,
       cot_descuento: 0,
-      cot_total: this.form.get('cot_total')!.value,
+      cot_total: this.formPedido.get('cot_total')!.value,
       cot_anulada: false,
       detalles: []
     }
@@ -140,9 +138,14 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.pedidoService.actualizarPedido(this.cot_empresa ,this.cot_empresa ,this.cot_empresa ,pedido).subscribe(data => {
       this.toastr.info('Registro Modificado', 'Pedido Modificado Exitosamente');
       this.pedidoService.obtenerPedidos();
-      this.form.reset();
+      this.formPedido.reset();
       this.cot_empresa = ""; this.cot_empresa = "" ;this.cot_empresa = "";
     });
+  }
+
+  agregarDetalle(){
+    this.detalle_pedidos.push(this.formDetalle.value);
+    this.formDetalle.reset();
   }
 
 }

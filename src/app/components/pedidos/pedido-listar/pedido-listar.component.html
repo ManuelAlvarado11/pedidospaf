@@ -5,7 +5,6 @@
         </div>
         <table class="table table-hover my-0">
             <thead> 
-                <th>Numero</th>
                 <th>Pedido</th>
                 <th>Vendedor</th>
                 <th>Bodega</th>
@@ -16,7 +15,6 @@
             </thead>
             <tbody>
                 <tr *ngFor="let pedido of pedidoService.list">
-                    <td>{{ pedido.cot_numero }}</td>
                     <td>{{ pedido.cot_pedido }}</td>
                     <td>{{ pedido.cot_vendedor }}</td>
                     <td>{{ pedido.cot_bodega }}</td>

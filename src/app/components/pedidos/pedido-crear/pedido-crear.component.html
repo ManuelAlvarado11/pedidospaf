@@ -26,11 +26,7 @@
                                 <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
                                     <form [formGroup]="form" (ngSubmit)="guardarPedido()">
                                         <div class="form-group">
-                                            <div class="row">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="cot_empresa" class="form-label">Empresa</label>
-                                                    <input type="text" class="form-control" id="cot_empresa" formControlName="cot_empresa" placeholder="Codigo Cliente" maxlength="6">
-                                                </div>  
+                                            <div class="row">                                               
                                                 <div class="mb-3 col-md-6">
                                                     <label for="cot_numero" class="form-label">Numero Pedido</label>
                                                     <input type="text" class="form-control" id="cot_numero"  formControlName="cot_numero" placeholder="Numero de pedido" maxlength="10">
@@ -85,16 +81,8 @@
                                 <div class="tab-pane fade" id="tab-2" role="tabpanel">    
                                     <form [formGroup]="formDetalle" (ngSubmit)="agregarDetalle()">                    
                                         <div class="form-group">
-                                            <div class="row">
-                                                <div class="mb-3 col-md-4">
-                                                    <label for="dct_empresa" class="form-label">Empresa</label>
-                                                    <input type="text"  class="form-control" id="dct_empresa" formControlName="dct_empresa" placeholder="Codigo Cliente" maxlength="6">
-                                                </div>  
-                                                <div class="mb-3 col-md-4">
-                                                    <label for="dct_cotizacion" class="form-label">N° Pedido</label>
-                                                    <input type="text" class="form-control" id="dct_cotizacion"  formControlName="dct_cotizacion" placeholder="Numero de pedido" maxlength="10">
-                                                </div>
-                                                <div class="mb-3 col-md-4">
+                                            <div class="row">                                
+                                                <div class="mb-3 col-md-6">
                                                     <label for="dct_numero_detalle" class="form-label">N° Detalle</label>
                                                     <input type="text" class="form-control" id="dct_numero_detalle"  formControlName="dct_numero_detalle" placeholder="Numero de pedido" maxlength="10">
                                                 </div>
@@ -113,18 +101,12 @@
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_precio_descuento" class="form-label">Precio</label>
                                                     <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="">
-                                                </div>
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="dct_costo" class="form-label">Costo</label>
-                                                    <input type="number"  class="form-control" id="dct_costo" formControlName="dct_costo" placeholder="" >
-                                                </div>
-                                            </div>
-                                            <div class="row">
+                                                </div>              
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_total" class="form-label">Total</label>
                                                     <input type="number" class="form-control" id="dct_total" formControlName="dct_total" placeholder="Total Pedido" max="5000">
                                                 </div>
-                                            </div>  
+                                            </div>
                                             <br>
                                             <div class="row justify-content-start">
                                                 <div class="col">                                                 
@@ -133,18 +115,20 @@
                                             </div>
                                         </div>  
                                     </form>  
-                                    <div>
-                                        <h5>Detalle</h5>
-                                        <table>
+                                    <br><br>
+                                    <div>                                      
+                                        <table class="table table-hover my-0">
                                             <tr>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
                                                 <th>Precio</th>
+                                                <th>Total</th>
                                             </tr>
                                             <tr *ngFor ="let item of detalle_pedidos">
                                                 <td>{{ item.dct_producto }}</td>
                                                 <td>{{ item.dct_cantidad }}</td>
                                                 <td>{{ item.dct_precio_descuento }}</td>
+                                                <td>{{ item.dct_total }}</td>
                                             </tr>
                                         </table>
                                     </div>                 

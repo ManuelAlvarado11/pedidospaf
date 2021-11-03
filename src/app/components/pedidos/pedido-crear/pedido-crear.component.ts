@@ -19,39 +19,24 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   detalle_pedidos!: Detalle_pedido[];
   cot_empresa = "";cot_numero = "";cot_pedido="";
 
-
   constructor(private formBuilder: FormBuilder, 
               private pedidoService: PedidoService,
               private toastr: ToastrService) { 
     this.form = this.formBuilder.group({
-      cot_empresa: ['',[Validators.required,Validators.maxLength(25)]],
       cot_numero: ['',[Validators.required,Validators.maxLength(25)]],
       cot_pedido: ['',[Validators.required,Validators.maxLength(25)]],
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
-      cot_gravada: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_iva: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_retencion: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_descuento: [0.00,[Validators.required,Validators.max(10000)]],
       cot_total: [0.00,[Validators.required,Validators.max(10000)]]   
     });
 
     this.formDetalle = this.formBuilder.group({
-      dct_empresa: ['',[Validators.required,Validators.maxLength(25)]],
       dct_numero_detalle: ['',[Validators.required,Validators.maxLength(25)]],
-      dct_cotizacion: ['',[Validators.required,Validators.maxLength(25)]],
       dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
       dct_cantidad: [0,[Validators.required,Validators.max(10000)]],
       dct_precio_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_gravada: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      cot_exenta: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_iva: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_total: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_costo: [0.00,[Validators.required,Validators.max(10000)]]      
+      dct_total: [0.00,[Validators.required,Validators.max(10000)]]
     });
   }
 
@@ -60,15 +45,13 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.pedido =data;
       this.detalle_pedidos = [];
       this.form.patchValue({
-        cot_empresa: this.pedido.cot_empresa,
         cot_numero: this.pedido.cot_numero,
         cot_pedido: this.pedido.cot_pedido,
+        cot_bodega: this.pedido.cot_bodega,
         cot_vendedor: this.pedido.cot_vendedor,
         cot_cliente: this.pedido.cot_cliente,
-        cot_total: this.pedido.cot_total,
-        cot_bodega: this.pedido.cot_bodega,
+        cot_total: this.pedido.cot_total
       });
-
       this.cot_empresa = this.pedido.cot_empresa;
       this.cot_numero = this.pedido.cot_numero;
       this.cot_pedido = this.pedido.cot_pedido;
@@ -91,17 +74,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   agregar(){
     const pedido: Pedido = {
-      cot_empresa: this.form.get('cot_empresa')!.value,
+      cot_empresa: "000004",
       cot_numero: this.form.get('cot_numero')!.value,
       cot_pedido: this.form.get('cot_pedido')!.value,
       cot_vendedor: this.form.get('cot_vendedor')!.value,
       cot_bodega: this.form.get('cot_bodega')!.value,
       cot_cliente: this.form.get('cot_cliente')!.value,
-      cot_gravada: 0,
-      cot_iva: 0,
-      cot_exenta: 0,
-      cot_retencion: 0,
-      cot_descuento: 0,
       cot_total: this.form.get('cot_total')!.value,
       cot_anulada: false,
       detalles: this.detalle_pedidos
@@ -115,23 +93,29 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
 
   agregarDetalle(){
-    console.log(this.formDetalle.value);
-    this.detalle_pedidos.push(this.formDetalle.value);
+    const detalle_pedido: Detalle_pedido={
+      dct_empresa: "000004",
+      dct_cotizacion: this.form.get('cot_numero')!.value,
+      dct_numero_detalle: this.formDetalle.get('dct_numero_detalle')!.value,
+      dct_producto: this.formDetalle.get('dct_producto')!.value,
+      dct_cantidad: this.formDetalle.get('dct_cantidad')!.value,
+      dct_precio_descuento: this.formDetalle.get('dct_precio_descuento')!.value,
+      dct_total: this.formDetalle.get('dct_total')!.value,
+    }
+
+    console.log(detalle_pedido);
+    this.detalle_pedidos.push(detalle_pedido);
+    this.formDetalle.reset();
   }
 
   editar(){
     const pedido: Pedido = {
-      cot_empresa: this.form.get('cot_empresa')!.value,
+      cot_empresa: "000004",
       cot_numero: this.form.get('cot_numero')!.value,
       cot_pedido: this.form.get('cot_pedido')!.value,
       cot_vendedor: this.form.get('cot_vendedor')!.value,
       cot_bodega: this.form.get('cot_bodega')!.value,
       cot_cliente: this.form.get('cot_cliente')!.value,
-      cot_gravada: 0,
-      cot_iva: 0,
-      cot_exenta: 0,
-      cot_retencion: 0,
-      cot_descuento: 0,
       cot_total: this.form.get('cot_total')!.value,
       cot_anulada: false,
       detalles: []

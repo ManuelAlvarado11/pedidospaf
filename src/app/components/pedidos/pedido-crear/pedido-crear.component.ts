@@ -28,15 +28,15 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
-      cot_total: [0.00,[Validators.required,Validators.max(10000)]]   
+      cot_total: ['',[Validators.required,Validators.max(10000)]]   
     });
 
     this.formDetalle = this.formBuilder.group({
       dct_numero_detalle: ['',[Validators.required,Validators.maxLength(25)]],
       dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
-      dct_cantidad: [0,[Validators.required,Validators.max(10000)]],
-      dct_precio_descuento: [0.00,[Validators.required,Validators.max(10000)]],
-      dct_total: [0.00,[Validators.required,Validators.max(10000)]]
+      dct_cantidad: ['',[Validators.required,Validators.max(10000)]],
+      dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]],
+      dct_total: ['',[Validators.required,Validators.max(10000)]]
     });
   }
 

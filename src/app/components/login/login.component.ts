@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiauthService } from 'src/app/services/apiauth.service';
-import { FormGroup, FormBuilder ,FormControl, Validators} from '@angular/forms'
+import { FormGroup, FormBuilder, Validators} from '@angular/forms'
 
 @Component({
   selector: 'app-login',

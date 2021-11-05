@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Login } from '../models/login';
 import { UserResponse } from '../models/userResponse';
 
+//Para enviar opciones en la peticion HTTP
 const httOption = {
   headers: new HttpHeaders({
     'Contend-Type': 'application/json'
@@ -26,6 +27,7 @@ export class ApiauthService {
   }
 
   constructor(private http: HttpClient) { 
+    //Estos dos objetos trabajan en conjunto por lo general
     this.userSubject = new BehaviorSubject<UserResponse>(JSON.parse(localStorage.getItem('usuario')!));
     this.user =this.userSubject.asObservable();
   }
@@ -33,6 +35,7 @@ export class ApiauthService {
   login(login:Login):Observable<UserResponse>{
     return this.http.post<UserResponse>(this.myAppUrl + this.myApiUrl, login, httOption).pipe(
       map(res => {
+        //Agregamos el usuario logeado al LocalStorage
         if(res.user != ""){
           localStorage.setItem('usuario', JSON.stringify(res));
           this.userSubject.next(res);
@@ -43,6 +46,7 @@ export class ApiauthService {
   }
 
   logout(){
+    //Removemos el usuario logeado del LocalStorage
     localStorage.removeItem('usuario');
     this.userSubject.next(null!);
   }

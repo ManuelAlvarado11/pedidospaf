@@ -64,7 +64,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy(){
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   guardarPedido(){
@@ -93,6 +95,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.toastr.success('Registro Agregado', 'Pedido Agregado Exitosamente');
       this.pedidoService.obtenerPedidos();
       this.form.reset();
+      this.formDetalle.reset();
     });
   }
 

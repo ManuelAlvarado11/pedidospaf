@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Detalle_pedido } from 'src/app/models/detalle_pedido';
 import { Pedido } from 'src/app/models/pedido';
+import { UserResponse } from 'src/app/models/userResponse';
 import { PedidoService } from 'src/app/services/pedido.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
   detalle_pedidos!: Detalle_pedido[];
   cot_empresa = "";cot_numero = "";cot_pedido="";
+  userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   constructor(private formBuilder: FormBuilder, 
               private pedidoService: PedidoService,
@@ -38,6 +40,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]],
       dct_total: ['',[Validators.required,Validators.max(10000)]]
     });
+
+    
   }
 
   ngOnInit(): void {
@@ -74,7 +78,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   agregar(){
     const pedido: Pedido = {
-      cot_empresa: "000004",
+      cot_empresa: this.userSesion.empresa,
       cot_numero: this.form.get('cot_numero')!.value,
       cot_pedido: this.form.get('cot_pedido')!.value,
       cot_vendedor: this.form.get('cot_vendedor')!.value,
@@ -94,7 +98,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   agregarDetalle(){
     const detalle_pedido: Detalle_pedido={
-      dct_empresa: "000004",
+      dct_empresa: this.userSesion.empresa,
       dct_cotizacion: this.form.get('cot_numero')!.value,
       dct_numero_detalle: this.formDetalle.get('dct_numero_detalle')!.value,
       dct_producto: this.formDetalle.get('dct_producto')!.value,

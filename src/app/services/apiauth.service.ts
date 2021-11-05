@@ -35,9 +35,9 @@ export class ApiauthService {
   login(login:Login):Observable<UserResponse>{
     return this.http.post<UserResponse>(this.myAppUrl + this.myApiUrl, login, httOption).pipe(
       map(res => {
-        //Agregamos el usuario logeado al LocalStorage
         if(res.user != ""){
-          localStorage.setItem('usuario', JSON.stringify(res));
+           //Agregamos el usuario logeado al LocalStorage
+          localStorage.setItem('usuario', JSON.stringify(res));        
           this.userSubject.next(res);
         }
         return res;

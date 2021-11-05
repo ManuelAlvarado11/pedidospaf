@@ -11,8 +11,7 @@ import { UserResponse } from 'src/app/models/userResponse';
 export class NavbarComponent implements OnInit {
   usuario!: UserResponse;
   
-  constructor(public apiAuthService: ApiauthService,
-              private router: Router){
+  constructor(public apiAuthService: ApiauthService){
     this.apiAuthService.user.subscribe(res =>{
     this.usuario = res;
     console.log("cambio el objeto"+ res);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiauthService } from 'src/app/services/apiauth.service';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms'
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,11 @@ export class LoginComponent implements OnInit {
   
   constructor(public apiAuthService: ApiauthService,
               private formBuilder: FormBuilder,
-              private router: Router) {
-      // if(this.apiAuthService.userData){
-      //   this.router.navigate(['/'])
-      // }
+              private router: Router,
+              private toastr: ToastrService) {
+      if(this.apiAuthService.userData){
+        this.router.navigate(['/'])
+      }
 
       this.formLogin = this.formBuilder.group({
         usr_usuario: ['',[Validators.required,Validators.maxLength(25)]],
@@ -31,9 +33,16 @@ export class LoginComponent implements OnInit {
 
   login(){
     console.log(this.formLogin.value)
-    this.apiAuthService.login(this.formLogin.value).subscribe(data => {
-      if(data != null){
+    this.apiAuthService.login(this.formLogin.value).subscribe(
+    data => {
+      if(data){
         this.router.navigate(['/']);
+        this.toastr.success('Usuario y contraseña correctos','Bienvenido a PAF PEDIDOS WEB')
+      }       
+    },
+    err => {
+      if(err.status == 400){
+        this.toastr.error('Usuario o contraseña Incorrecta','Verifique sus credenciales')
       }
     })
   }

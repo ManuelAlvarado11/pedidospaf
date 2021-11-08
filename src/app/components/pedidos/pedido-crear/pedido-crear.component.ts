@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Detalle_pedido } from 'src/app/models/detalle_pedido';
 import { Pedido } from 'src/app/models/pedido';
-import { UserResponse } from 'src/app/models/userResponse';
 import { PedidoService } from 'src/app/services/pedido.service';
 
 @Component({
@@ -117,7 +116,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   editar(){
     const pedido: Pedido = {
-      cot_empresa: "000004",
+      cot_empresa: this.userSesion.empresa,
       cot_numero: this.form.get('cot_numero')!.value,
       cot_pedido: this.form.get('cot_pedido')!.value,
       cot_vendedor: this.form.get('cot_vendedor')!.value,
@@ -132,6 +131,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.toastr.info('Registro Modificado', 'Pedido Modificado Exitosamente');
       this.pedidoService.obtenerPedidos();
       this.form.reset();
+      this.formDetalle.reset();
       this.cot_empresa = ""; this.cot_empresa = "" ;this.cot_empresa = "";
     });
   }

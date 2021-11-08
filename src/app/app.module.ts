@@ -10,10 +10,9 @@ import { AppComponent } from './app.component';
 import { PedidosComponent } from './components/pedidos/pedidos.component';
 import { PedidoCrearComponent } from './components/pedidos/pedido-crear/pedido-crear.component';
 import { PedidoListarComponent } from './components/pedidos/pedido-listar/pedido-listar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ContentComponent } from './components/content/content.component';
+import { FooterComponent } from './components/home/footer/footer.component';
+import { NavbarComponent } from './components/home/navbar/navbar.component';
+import { SidebarComponent } from './components/home/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { JwtInterceptor } from './security/jwt.interceptor';
@@ -27,7 +26,6 @@ import { JwtInterceptor } from './security/jwt.interceptor';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    ContentComponent,
     LoginComponent,
     HomeComponent
   ],

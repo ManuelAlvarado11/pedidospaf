@@ -18,6 +18,10 @@ export class PedidoService {
     return this.http.post<Pedido>(this.myAppUrl + this.myApiUrl, pedido);
   }
 
+  actualizarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string, pedido: Pedido): Observable<Pedido>{
+    return this.http.put<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero+"/"+cot_pedido, pedido);
+  }
+
   eliminarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string){
     return this.http.delete<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero+"/"+cot_pedido);
   }
@@ -27,15 +31,11 @@ export class PedidoService {
                   toPromise().then(data => { this.list = data as Pedido[]; });
   }
 
-  actualizarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string, pedido: Pedido): Observable<Pedido>{
-    return this.http.put<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero+"/"+cot_pedido, pedido);
+  obtenerPedido(): Observable<Pedido>{
+    return this.actualizaFormulario.asObservable();
   }
 
   actualizar(pedido: any){
     this.actualizaFormulario.next(pedido);
-  }
-
-  obtenerPedido(): Observable<Pedido>{
-    return this.actualizaFormulario.asObservable();
   }
 }

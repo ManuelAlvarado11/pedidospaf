@@ -11,6 +11,7 @@ export class PedidoService {
   myApiUrl = 'api/fac_pedidos/';
   list!: Pedido[];
   private actualizaFormulario = new BehaviorSubject<Pedido>({} as any);
+  userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +28,7 @@ export class PedidoService {
   }
 
   obtenerPedidos(){
-    this.http.get(this.myAppUrl + this.myApiUrl).
+    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa).
                   toPromise().then(data => { this.list = data as Pedido[]; });
   }
 

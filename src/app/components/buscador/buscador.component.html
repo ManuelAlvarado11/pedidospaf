@@ -1,4 +1,4 @@
-<ng-template #content let-modal>
+<ng-template #content let-modal >
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -10,19 +10,15 @@
         <div *ngIf = "opcion==1">
             <table class="table table-hover my-0">
                 <thead> 
-                    <th>id</th>
                     <th>{{encabezados[0].encabezado_1}}</th>
                     <th>{{encabezados[0].encabezado_2}}</th>
                     <th>{{encabezados[0].encabezado_3}}</th>
-                    <th>Acciones</th>
                 </thead>           
                 <tbody>          
-                    <tr *ngFor="let item of pedidoService.list; let i =index">
-                        <td>{{ i }}</td>
-                        <td>{{ item.cot_pedido }}</td>
-                        <td>{{ item.cot_bodega }}</td>
-                        <td>{{ item.cot_total }}</td>
-                        <td><span class="badge bg-success">Done</span></td>
+                    <tr *ngFor="let item of clienteService.list">
+                        <td>{{ item.cli_codigo }}</td>
+                        <td>{{ item.cli_nombre }}</td>
+                        <td>{{ item.cli_registro }}</td>
                     </tr>                 
                 </tbody>  
             </table>
@@ -31,49 +27,28 @@
         <div *ngIf = "opcion==2">
             <table class="table table-hover my-0">
                 <thead> 
-                    <th>id</th>
                     <th>{{encabezados[0].encabezado_1}}</th>
                     <th>{{encabezados[0].encabezado_2}}</th>
                     <th>{{encabezados[0].encabezado_3}}</th>
                     <th>Acciones</th>
                 </thead>           
                 <tbody>          
-                    <tr *ngFor="let item of pedidoService.list; let i =index">
-                        <td>{{ i }}</td>
-                        <td>{{ item.cot_pedido }}</td>
-                        <td>{{ item.cot_bodega }}</td>
-                        <td>{{ item.cot_total }}</td>
+                    <tr *ngFor="let item of productoService.list">
+                        <td>{{ item.pro_codigo }}</td>
+                        <td>{{ item.pro_nombre }}</td>
+                        <td>{{ item.pro_grupo }}</td>
                         <td><span class="badge bg-success">Done</span></td>
                     </tr>                 
                 </tbody>  
             </table>
         </div>
-        <!-- Vendedores -->
-        <div *ngIf = "opcion==3">
-            <table class="table table-hover my-0">
-                <thead> 
-                    <th>id</th>
-                    <th>{{encabezados[0].encabezado_1}}</th>
-                    <th>{{encabezados[0].encabezado_2}}</th>
-                    <th>{{encabezados[0].encabezado_3}}</th>
-                    <th>Acciones</th>
-                </thead>           
-                <tbody>          
-                    <tr *ngFor="let item of pedidoService.list; let i =index">
-                        <td>{{ i }}</td>
-                        <td>{{ item.cot_pedido }}</td>
-                        <td>{{ item.cot_bodega }}</td>
-                        <td>{{ item.cot_total }}</td>
-                        <td><span class="badge bg-success">Done</span></td>
-                    </tr>                 
-                </tbody>  
-            </table>
-        </div>
+       
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
     </div>
 </ng-template>
+
 
 
 

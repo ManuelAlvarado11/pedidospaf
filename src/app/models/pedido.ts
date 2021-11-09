@@ -1,4 +1,4 @@
-import { Detalle_pedido } from "./detalle_pedido";
+import { DetallePedido } from "./detallePedido";
 
  export class Pedido {
     cot_empresa!: string;
@@ -9,5 +9,5 @@ import { Detalle_pedido } from "./detalle_pedido";
     cot_cliente!: string;
     cot_total!: number;
     cot_anulada!: boolean;
-    detalles!: Detalle_pedido[];
+    detalles!: DetallePedido[];
  }

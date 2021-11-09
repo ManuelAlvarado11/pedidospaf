@@ -1,4 +1,4 @@
-export class Detalle_pedido{
+export class DetallePedido{
     dct_empresa!: string;
     dct_cotizacion!: string;
     dct_numero_detalle!: string;

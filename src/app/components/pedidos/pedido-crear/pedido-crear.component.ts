@@ -1,10 +1,14 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Detalle_pedido } from 'src/app/models/detalle_pedido';
+import { DetallePedido } from 'src/app/models/detallePedido';
 import { Pedido } from 'src/app/models/pedido';
+import { BodegaService } from 'src/app/services/bodega.service';
 import { PedidoService } from 'src/app/services/pedido.service';
+import { TipoDocumentoService } from 'src/app/services/tipo-documento.service';
+import { VendedorService } from 'src/app/services/vendedor.service';
 
 
 @Component({
@@ -17,13 +21,16 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   formDetalle: FormGroup;
   subscription!: Subscription;
   pedido!: Pedido;
-  detalle_pedidos!: Detalle_pedido[];
+  detalle_pedidos!: DetallePedido[];
   cot_empresa = "";cot_numero = "";cot_pedido="";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   constructor(private formBuilder: FormBuilder, 
+              private toastr: ToastrService,
               private pedidoService: PedidoService,
-              private toastr: ToastrService) { 
+              public bodegaService:BodegaService,
+              public tipoDocumentoService:TipoDocumentoService,
+              public vendedorService:VendedorService) { 
     this.form = this.formBuilder.group({
       cot_numero: ['',[Validators.required,Validators.maxLength(25)]],
       cot_pedido: ['',[Validators.required,Validators.maxLength(25)]],
@@ -74,7 +81,16 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         dct_producto: data.pro_codigo
       });
     });
-    
+
+    //CARGAR BODEGAS
+    this.bodegaService.obtenerBodegas();
+
+    //CARGAR VENDEDORES
+    this.vendedorService.obtenerVendedores()
+
+    //CARGAR TIPO DOCUMENTO
+    this.tipoDocumentoService.obtenerTipoDocumentos()
+  
   }
   
   ngOnDestroy(){
@@ -114,7 +130,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
 
   agregarDetalle(){
-    const detalle_pedido: Detalle_pedido={
+    const detalle_pedido: DetallePedido={
       dct_empresa: this.userSesion.empresa,
       dct_cotizacion: this.form.get('cot_numero')!.value,
       dct_numero_detalle: this.formDetalle.get('dct_numero_detalle')!.value,

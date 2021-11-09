@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Producto } from '../models/producto';
 
 @Injectable({
@@ -10,7 +9,6 @@ export class ProductoService {
   myAppUrl = 'http://localhost:60215/';
   myApiUrl = 'api/fac_productos/';
   list!: Producto[];
-  private actualizaFormulario = new BehaviorSubject<Producto>({} as any);
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   constructor(private http: HttpClient) { }
@@ -20,11 +18,4 @@ export class ProductoService {
                   toPromise().then(data => {this.list = data as Producto[]; });
   }
 
-  obtenerPorducto(): Observable<Producto>{
-    return this.actualizaFormulario.asObservable();
-  }
-
-  actualizar(producto: any){
-    this.actualizaFormulario.next(producto);
-  }
 }

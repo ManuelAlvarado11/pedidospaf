@@ -41,18 +41,20 @@
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <label for="cot_vendedor" class="input-group-text" >Vendedor</label>
-                                        <input type="text" class="form-control"  id="cot_vendedor" formControlName="cot_vendedor" placeholder="Codigo vendedor" maxlength="10">
+                                        <input type="text" class="form-control" id="cot_vendedor" formControlName="cot_vendedor" placeholder="Codigo Vendedor" maxlength="10" >
                                         <div class="input-group-append">
-                                          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                                          <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarVendedor()"><i class="fas fa-search"></i></button>
+                                          <app-buscador #buscador></app-buscador>
                                         </div>
                                     </div>
-                                </div>      
+                                </div>       
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <label for="cot_cliente" class="input-group-text" >Cliente</label>
                                         <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" >
                                         <div class="input-group-append">
-                                          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                                          <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
+                                          <app-buscador #buscador></app-buscador>
                                         </div>
                                     </div>
                                 </div>                                                                                                             
@@ -90,10 +92,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="dct_producto" class="form-label">Producto</label>
-                                    <input type="text"  class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="" maxlength="6">
-                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <label for="dct_producto" class="input-group-text" >Producto</label>
+                                        <input type="text" class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo Producto" maxlength="10" >
+                                        <div class="input-group-append">
+                                          <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarProducto()"><i class="fas fa-search"></i></button>
+                                          <app-buscador #buscador></app-buscador>
+                                        </div>
+                                    </div>
+                                </div>    
                                 <div class="mb-3 col-md-6">
                                     <label for="dct_cantidad" class="form-label">Cantidad</label>
                                     <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >

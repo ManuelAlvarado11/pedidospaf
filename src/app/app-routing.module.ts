@@ -6,7 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PedidoCrearComponent } from './components/pedidos/pedido-crear/pedido-crear.component';
 import { PedidoListarComponent } from './components/pedidos/pedido-listar/pedido-listar.component';
 import { PedidosComponent } from './components/pedidos/pedidos.component';
-
+import { BuscadorComponent } from './components/buscador/buscador.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -16,7 +16,8 @@ const routes: Routes = [
       {path: 'pedidos', component:PedidosComponent, canActivate: [AuthGuard],
         children: [
           {path: 'listar', component:PedidoListarComponent,canActivate: [AuthGuard]},
-          {path: 'crear', component:PedidoCrearComponent,canActivate: [AuthGuard]}
+          {path: 'crear', component:PedidoCrearComponent,canActivate: [AuthGuard]},
+          {path: 'buscar', component:BuscadorComponent,canActivate: [AuthGuard]}
         ]
       }
     ]

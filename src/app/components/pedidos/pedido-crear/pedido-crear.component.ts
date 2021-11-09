@@ -6,6 +6,7 @@ import { Detalle_pedido } from 'src/app/models/detalle_pedido';
 import { Pedido } from 'src/app/models/pedido';
 import { PedidoService } from 'src/app/services/pedido.service';
 
+
 @Component({
   selector: 'app-pedido-crear',
   templateUrl: './pedido-crear.component.html',
@@ -39,7 +40,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]],
       dct_total: ['',[Validators.required,Validators.max(10000)]]
     });
-
     
   }
 

@@ -16,6 +16,8 @@ import { SidebarComponent } from './components/home/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { JwtInterceptor } from './security/jwt.interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BuscadorComponent } from './components/buscador/buscador.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { JwtInterceptor } from './security/jwt.interceptor';
     NavbarComponent,
     SidebarComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    BuscadorComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { JwtInterceptor } from './security/jwt.interceptor';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot() 
+    ToastrModule.forRoot(),
+    NgbModule 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

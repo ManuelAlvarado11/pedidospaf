@@ -47,7 +47,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <label for="cot_cliente" class="input-group-text" >Cliente</label>
-                                        <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" >
+                                        <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" value="buscador.clienteService.cliente.cli_codigo">
                                         <div class="input-group-append">
                                           <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
                                           <app-buscador #buscador></app-buscador>

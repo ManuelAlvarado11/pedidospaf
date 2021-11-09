@@ -44,6 +44,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //CARGAR PEDIDO
     this.pedidoService.obtenerPedido().subscribe(data => { 
       this.pedido =data;
       this.detalle_pedidos = [];
@@ -58,6 +59,20 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.cot_empresa = this.pedido.cot_empresa;
       this.cot_numero = this.pedido.cot_numero;
       this.cot_pedido = this.pedido.cot_pedido;
+    });
+    
+    //CARGAR CLIENTE
+    this.pedidoService.obtenerCliente().subscribe(data => {
+      this.form.patchValue({
+        cot_cliente: data.cli_codigo
+      });
+    });
+
+    //CARGAR PRODUCTO
+    this.pedidoService.obtenerProducto().subscribe(data => {
+      this.formDetalle.patchValue({
+        dct_producto: data.pro_codigo
+      });
     });
     
   }

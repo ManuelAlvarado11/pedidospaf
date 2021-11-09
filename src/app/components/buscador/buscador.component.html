@@ -15,7 +15,7 @@
                     <th>{{encabezados[0].encabezado_3}}</th>
                 </thead>           
                 <tbody>          
-                    <tr *ngFor="let item of clienteService.list">
+                    <tr *ngFor="let item of clienteService.list" (click)="seleccionar(item)">
                         <td>{{ item.cli_codigo }}</td>
                         <td>{{ item.cli_nombre }}</td>
                         <td>{{ item.cli_registro }}</td>
@@ -33,7 +33,7 @@
                     <th>Acciones</th>
                 </thead>           
                 <tbody>          
-                    <tr *ngFor="let item of productoService.list">
+                    <tr *ngFor="let item of productoService.list" (click)="seleccionar(item)">
                         <td>{{ item.pro_codigo }}</td>
                         <td>{{ item.pro_nombre }}</td>
                         <td>{{ item.pro_grupo }}</td>

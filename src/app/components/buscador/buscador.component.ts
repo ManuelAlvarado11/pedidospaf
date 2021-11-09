@@ -4,6 +4,7 @@ import { PedidoService } from 'src/app/services/pedido.service';
 import { Buscador } from 'src/app/models/buscador';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -47,6 +48,19 @@ export class BuscadorComponent{
       }]; 
     
       this.modal.open(this.content, { size: 'lg', backdrop: 'static' });
+  }
+
+  seleccionar(item: any){
+    switch (this.opcion){
+      case 1:
+        this.pedidoService.seleccionarCliente(item);
+        this.modal.dismissAll();
+        break;
+      case 2:
+        this.pedidoService.seleccionarProducto(item);
+        this.modal.dismissAll();
+        break;
+    }
   }
 
 }

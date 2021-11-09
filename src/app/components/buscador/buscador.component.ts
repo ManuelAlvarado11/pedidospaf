@@ -1,10 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PedidoService } from 'src/app/services/pedido.service';
-import { Buscador } from 'src/app/models/buscador';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
-import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -36,6 +34,7 @@ export class BuscadorComponent{
     
     this.modal.open(this.content, { size: 'lg', backdrop: 'static' });
   }
+  
   buscarProducto(){
     this.opcion = 2;
     this.productoService.obtenerProductos();
@@ -47,7 +46,7 @@ export class BuscadorComponent{
         'encabezado_3':'Grupo'
       }]; 
     
-      this.modal.open(this.content, { size: 'lg', backdrop: 'static' });
+    this.modal.open(this.content, { size: 'lg', backdrop: 'static' });
   }
 
   seleccionar(item: any){

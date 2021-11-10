@@ -1,159 +1,165 @@
-<div class="col-12">
-    <div class="card flex-fill">
-        <div class="card-header">
-            <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tab-1">Pedido</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
-                    <form [formGroup]="form" (ngSubmit)="guardarPedido()">
-                        <div class="form-group">
-                            <div class="row">                                               
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_numero" class="form-label">Numero Pedido</label>
-                                    <input type="text" class="form-control" id="cot_numero"  formControlName="cot_numero" placeholder="Numero de pedido" maxlength="10">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_pedido" class="form-label">Pedido</label>
-                                    <input type="text" class="form-control" id="cot_pedido" formControlName="cot_pedido" placeholder="Pedido" maxlength="6">
-                                </div> 
-                            </div>
-                            <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_fecha" class="form-label">Fecha</label>
-                                    <input type="date" class="form-control" id="cot_fecha">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_bodega" class="form-label">Bodega</label>
-                                    <select class="form-select" id="cot_bodega" formControlName="cot_bodega">
-                                    <option [value]="item.bod_codigo" *ngFor="let item of bodegaService.list">
-                                        {{ item.bod_descripcion }}
-                                    </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">  
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_vendedor" class="form-label">Vendedor</label>
-                                    <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
-                                    <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
-                                        {{ item.vcn_nombre }}
-                                    </option>
-                                    </select>
-                                </div>  
-                                <div class="mb-3 col-md-6">
-                                    <label for="cot_vendedor" class="form-label">Tipo Documento</label>
-                                    <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
-                                    <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
-                                        {{ item.vcn_nombre }}
-                                    </option>
-                                    </select>
-                                </div>                                                                                                                                                          
-                            </div>                                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <br>
-                                    <div class="input-group mb-3">
-                                        <label for="cot_cliente" class="input-group-text" >Cliente</label>
-                                        <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" value="buscador.clienteService.cliente.cli_codigo">
-                                        <div class="input-group-append">
-                                          <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
-                                          <app-buscador #buscador></app-buscador>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tab-1">Pedido</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+                                <form [formGroup]="form" (ngSubmit)="guardarPedido()">
+                                    <div class="form-group">
+                                        <div class="row">                                               
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_numero" class="form-label">Numero Pedido</label>
+                                                <input type="text" class="form-control" id="cot_numero"  formControlName="cot_numero" placeholder="Numero de pedido" maxlength="10">
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_pedido" class="form-label">Pedido</label>
+                                                <input type="text" class="form-control" id="cot_pedido" formControlName="cot_pedido" placeholder="Pedido" maxlength="6">
+                                            </div> 
                                         </div>
-                                    </div>
-                                </div>     
-                                <div class="mb-3 col-md-3">
-                                    <label for="cot_total" class="form-label">Total</label>
-                                    <input type="number" class="form-control" id="cot_total" formControlName="cot_total" placeholder="0.00" max="5000">
-                                </div>                                                                           
-                                <div class="mb-3 col-md-3">
-                                    <br>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="check_factura" disabled>
-                                        <label class="form-check-label" for="check_factura">
-                                            Pedido Facturado
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> 
-                            <br>
-                            <div class="row justify-content-end">
-                                <div class="col">                                           
-                                    <button type="submit" [disabled]="!form.valid" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button>
-                                </div>                                          
-                            </div>
-                        </div>   
-                    </form>                                            
-                </div>
-                <div class="tab-pane fade" id="tab-2" role="tabpanel">    
-                    <form [formGroup]="formDetalle" (ngSubmit)="agregarDetalle()">                    
-                        <div class="form-group">
-                            <div class="row">                                
-                                <div class="mb-3 col-md-6">
-                                    <label for="dct_numero_detalle" class="form-label">N° Detalle</label>
-                                    <input type="text" class="form-control" id="dct_numero_detalle"  formControlName="dct_numero_detalle" placeholder="Numero de pedido" maxlength="10">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <br>
-                                    <div class="input-group mb-3">
-                                        <label for="dct_producto" class="input-group-text" >Producto</label>
-                                        <input type="text" class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo Producto" maxlength="25" >
-                                        <div class="input-group-append">
-                                          <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarProducto()"><i class="fas fa-search"></i></button>
-                                          <app-buscador #buscador></app-buscador>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_fecha" class="form-label">Fecha</label>
+                                                <input type="date" class="form-control" id="cot_fecha">
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_bodega" class="form-label">Bodega</label>
+                                                <select class="form-select" id="cot_bodega" formControlName="cot_bodega">
+                                                <option [value]="item.bod_codigo" *ngFor="let item of bodegaService.list">
+                                                    {{ item.bod_descripcion }}
+                                                </option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>    
-                                <div class="mb-3 col-md-6">
-                                    <label for="dct_cantidad" class="form-label">Cantidad</label>
-                                    <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >
-                                </div>
+                                        <div class="row">  
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_vendedor" class="form-label">Vendedor</label>
+                                                <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
+                                                <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
+                                                    {{ item.vcn_nombre }}
+                                                </option>
+                                                </select>
+                                            </div>  
+                                            <div class="mb-3 col-md-6">
+                                                <label for="cot_vendedor" class="form-label">Tipo Documento</label>
+                                                <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
+                                                <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
+                                                    {{ item.vcn_nombre }}
+                                                </option>
+                                                </select>
+                                            </div>                                                                                                                                                          
+                                        </div>                                            
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <br>
+                                                <div class="input-group mb-3">
+                                                    <label for="cot_cliente" class="input-group-text" >Cliente</label>
+                                                    <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" value="buscador.clienteService.cliente.cli_codigo">
+                                                    <div class="input-group-append">
+                                                      <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
+                                                      <app-buscador #buscador></app-buscador>
+                                                    </div>
+                                                </div>
+                                            </div>     
+                                            <div class="mb-3 col-md-3">
+                                                <label for="cot_total" class="form-label">Total</label>
+                                                <input type="number" class="form-control" id="cot_total" formControlName="cot_total" placeholder="0.00" max="5000">
+                                            </div>                                                                           
+                                            <div class="mb-3 col-md-3">
+                                                <br>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="check_factura" disabled>
+                                                    <label class="form-check-label" for="check_factura">
+                                                        Pedido Facturado
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <br>
+                                        <div class="row justify-content-end">
+                                            <div class="col">                                           
+                                                <button type="submit" [disabled]="!form.valid" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button>
+                                            </div>                                          
+                                        </div>
+                                    </div>   
+                                </form>                                            
                             </div>
-                            <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="dct_precio_descuento" class="form-label">Precio</label>
-                                    <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="0.00">
-                                </div>              
-                                <div class="mb-3 col-md-6">
-                                    <label for="dct_total" class="form-label">Total</label>
-                                    <input type="number" class="form-control" id="dct_total" formControlName="dct_total" placeholder="0.00" max="5000">
-                                </div>
+                            <div class="tab-pane fade" id="tab-2" role="tabpanel">    
+                                <form [formGroup]="formDetalle" (ngSubmit)="agregarDetalle()">                    
+                                    <div class="form-group">
+                                        <div class="row">                                
+                                            <div class="mb-3 col-md-6">
+                                                <label for="dct_numero_detalle" class="form-label">N° Detalle</label>
+                                                <input type="text" class="form-control" id="dct_numero_detalle"  formControlName="dct_numero_detalle" placeholder="Numero de pedido" maxlength="10">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <br>
+                                                <div class="input-group mb-3">
+                                                    <label for="dct_producto" class="input-group-text" >Producto</label>
+                                                    <input type="text" class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo Producto" maxlength="25" >
+                                                    <div class="input-group-append">
+                                                      <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarProducto()"><i class="fas fa-search"></i></button>
+                                                      <app-buscador #buscador></app-buscador>
+                                                    </div>
+                                                </div>
+                                            </div>    
+                                            <div class="mb-3 col-md-6">
+                                                <label for="dct_cantidad" class="form-label">Cantidad</label>
+                                                <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="dct_precio_descuento" class="form-label">Precio</label>
+                                                <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="0.00">
+                                            </div>              
+                                            <div class="mb-3 col-md-6">
+                                                <label for="dct_total" class="form-label">Total</label>
+                                                <input type="number" class="form-control" id="dct_total" formControlName="dct_total" placeholder="0.00" max="5000">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row justify-content-start">
+                                            <div class="col">                                                 
+                                                <button type="submit" [disabled]="!formDetalle.valid" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+                                            </div>                                          
+                                        </div>
+                                    </div>  
+                                </form>  
+                                <br><br>
+                                <div>                                      
+                                    <table class="table table-hover my-0">
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        <tr *ngFor ="let item of detalle_pedidos">
+                                            <td>{{ item.dct_producto }}</td>
+                                            <td>{{ item.dct_cantidad }}</td>
+                                            <td>{{ item.dct_precio_descuento }}</td>
+                                            <td>{{ item.dct_total }}</td>
+                                        </tr>
+                                    </table>
+                                </div>                 
                             </div>
-                            <br>
-                            <div class="row justify-content-start">
-                                <div class="col">                                                 
-                                    <button type="submit" [disabled]="!formDetalle.valid" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
-                                </div>                                          
-                            </div>
-                        </div>  
-                    </form>  
-                    <br><br>
-                    <div>                                      
-                        <table class="table table-hover my-0">
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                                <th>Total</th>
-                            </tr>
-                            <tr *ngFor ="let item of detalle_pedidos">
-                                <td>{{ item.dct_producto }}</td>
-                                <td>{{ item.dct_cantidad }}</td>
-                                <td>{{ item.dct_precio_descuento }}</td>
-                                <td>{{ item.dct_total }}</td>
-                            </tr>
-                        </table>
-                    </div>                 
-                </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         </div>
     </div> 

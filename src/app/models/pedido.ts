@@ -7,6 +7,7 @@ import { DetallePedido } from "./detallePedido";
     cot_vendedor!: string;
     cot_bodega!: string;
     cot_cliente!: string;
+    cot_tipo_documento!: string;
     cot_total!: number;
     cot_anulada!: boolean;
     detalles!: DetallePedido[];

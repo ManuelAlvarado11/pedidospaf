@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
+import { Cliente } from 'src/app/models/cliente';
 
 
 @Component({
@@ -10,16 +11,29 @@ import { ProductoService } from 'src/app/services/producto.service';
   templateUrl: './buscador.component.html',
   styleUrls: ['./buscador.component.css']
 })
-export class BuscadorComponent{
+export class BuscadorComponent implements OnInit{
   @ViewChild("content") content: any;
   @Input() title = "";
   opcion = 0;
   encabezados= [] as any;
+  dtOptions: DataTables.Settings = {};
 
   constructor(private modal: NgbModal, 
               public pedidoService: PedidoService,
               public clienteService: ClienteService,
               public productoService: ProductoService) { }
+              
+  ngOnInit(): void {
+    
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      columns: [{ data: 'id' }, { data: 'firstName' }, { data: 'lastName' }],
+    };
+    
+  }
 
   buscarCliente() {
     this.opcion = 1;

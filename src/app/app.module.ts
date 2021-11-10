@@ -17,6 +17,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { JwtInterceptor } from './security/jwt.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DataTablesModule } from 'angular-datatables';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 
 @NgModule({
@@ -40,7 +41,8 @@ import { BuscadorComponent } from './components/buscador/buscador.component';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgbModule 
+    NgbModule,
+    DataTablesModule 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

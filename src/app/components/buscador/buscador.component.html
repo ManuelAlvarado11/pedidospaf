@@ -8,7 +8,7 @@
     <div class="modal-body">
         <!-- Clientes -->
         <div *ngIf = "opcion==1">
-            <table class="table table-hover my-0">
+            <table class="table table-bordered table-striped">
                 <thead> 
                     <th>{{encabezados[0].encabezado_1}}</th>
                     <th>{{encabezados[0].encabezado_2}}</th>
@@ -25,14 +25,14 @@
         </div>   
         <!-- Productos -->
         <div *ngIf = "opcion==2">
-            <table class="table table-hover my-0">
+            <table datatable [dtOptions]="dtOptions" class="table table-bordered table-striped">
                 <thead> 
                     <th>{{encabezados[0].encabezado_1}}</th>
                     <th>{{encabezados[0].encabezado_2}}</th>
                     <th>{{encabezados[0].encabezado_3}}</th>
                     <th>Acciones</th>
                 </thead>           
-                <tbody>          
+                <tbody *ngIf="productoService.list?.length != 0">          
                     <tr *ngFor="let item of productoService.list" (click)="seleccionar(item)">
                         <td>{{ item.pro_codigo }}</td>
                         <td>{{ item.pro_nombre }}</td>
@@ -50,6 +50,16 @@
 </ng-template>
 
 
+<!-- Page specific script -->
+<script>
+    // Basic example
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable({
+            "paging": true // false to disable pagination (or any other option)
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
 
 
   

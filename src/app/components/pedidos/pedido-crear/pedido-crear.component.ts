@@ -31,12 +31,14 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               public bodegaService:BodegaService,
               public tipoDocumentoService:TipoDocumentoService,
               public vendedorService:VendedorService) { 
+    
     this.form = this.formBuilder.group({
       cot_numero: ['',[Validators.required,Validators.maxLength(25)]],
       cot_pedido: ['',[Validators.required,Validators.maxLength(25)]],
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
+      cot_tipo_documento: ['',[Validators.required,Validators.maxLength(25)]],
       cot_total: ['',[Validators.required,Validators.max(10000)]]   
     });
 
@@ -61,6 +63,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         cot_bodega: this.pedido.cot_bodega,
         cot_vendedor: this.pedido.cot_vendedor,
         cot_cliente: this.pedido.cot_cliente,
+        cot_tipo_documento: this.pedido.cot_tipo_documento,
         cot_total: this.pedido.cot_total
       });
       this.cot_empresa = this.pedido.cot_empresa;
@@ -116,6 +119,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: this.form.get('cot_vendedor')!.value,
       cot_bodega: this.form.get('cot_bodega')!.value,
       cot_cliente: this.form.get('cot_cliente')!.value,
+      cot_tipo_documento: this.form.get('cot_tipo_documento')!.value,
       cot_total: this.form.get('cot_total')!.value,
       cot_anulada: false,
       detalles: this.detalle_pedidos
@@ -153,6 +157,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: this.form.get('cot_vendedor')!.value,
       cot_bodega: this.form.get('cot_bodega')!.value,
       cot_cliente: this.form.get('cot_cliente')!.value,
+      cot_tipo_documento: this.form.get('cot_tipo_documento')!.value,
       cot_total: this.form.get('cot_total')!.value,
       cot_anulada: false,
       detalles: []

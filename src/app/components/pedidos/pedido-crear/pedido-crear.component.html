@@ -35,7 +35,7 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="cot_bodega" class="form-label">Bodega</label>
-                                                <select class="form-select" id="cot_bodega" formControlName="cot_bodega">
+                                                <select class="form-control select2" style="width: 100%;" id="cot_bodega" formControlName="cot_bodega">
                                                 <option [value]="item.bod_codigo" *ngFor="let item of bodegaService.list">
                                                     {{ item.bod_descripcion }}
                                                 </option>
@@ -45,17 +45,17 @@
                                         <div class="row">  
                                             <div class="mb-3 col-md-6">
                                                 <label for="cot_vendedor" class="form-label">Vendedor</label>
-                                                <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
+                                                <select class="form-control select2" style="width: 100%;" id="cot_vendedor" formControlName="cot_vendedor">
                                                 <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
                                                     {{ item.vcn_nombre }}
                                                 </option>
                                                 </select>
                                             </div>  
                                             <div class="mb-3 col-md-6">
-                                                <label for="cot_vendedor" class="form-label">Tipo Documento</label>
-                                                <select class="form-select" id="cot_vendedor" formControlName="cot_vendedor">
-                                                <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
-                                                    {{ item.vcn_nombre }}
+                                                <label for="cot_tipo_documento" class="form-label">Tipo Documento</label>
+                                                <select class="form-control select2" style="width: 100%;" id="cot_tipo_documento" formControlName="cot_tipo_documento">
+                                                <option [value]="item.ftd_codigo" *ngFor="let item of tipoDocumentoService.list">
+                                                    {{ item.ftd_descripcion }}
                                                 </option>
                                                 </select>
                                             </div>                                                                                                                                                          

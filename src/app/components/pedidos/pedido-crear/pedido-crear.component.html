@@ -3,20 +3,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card flex-fill">
-                    <div class="card-header">
-                        <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tab-1">Pedido</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
-                                <form [formGroup]="form" (ngSubmit)="guardarPedido()">
+                    <form [formGroup]="formPedido" (ngSubmit)="guardarPedido()">
+                        <div class="card-header">
+                            <ul class="nav nav-pills card-header-pills pull-right" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab-1">Pedido</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">                           
+                            <div class="tab-content">                        
+                                <div class="tab-pane fade show active" id="tab-1" role="tabpanel">                              
                                     <div class="form-group">
                                         <div class="row">                                               
                                             <div class="mb-3 col-md-6">
@@ -67,16 +67,13 @@
                                                     <label for="cot_cliente" class="input-group-text" >Cliente</label>
                                                     <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10" value="buscador.clienteService.cliente.cli_codigo">
                                                     <div class="input-group-append">
-                                                      <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
-                                                      <app-buscador #buscador></app-buscador>
+                                                    <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
+                                                    <app-buscador #buscador></app-buscador>
                                                     </div>
                                                 </div>
                                             </div>     
-                                            <div class="mb-3 col-md-3">
-                                                <label for="cot_total" class="form-label">Total</label>
-                                                <input type="number" class="form-control" id="cot_total" formControlName="cot_total" placeholder="0.00" max="5000">
-                                            </div>                                                                           
-                                            <div class="mb-3 col-md-3">
+                                                                                                                     
+                                            <div class="mb-3 col-md-6">
                                                 <br>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="check_factura" disabled>
@@ -86,80 +83,90 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                        <br>
-                                        <div class="row justify-content-end">
-                                            <div class="col">                                           
-                                                <button type="submit" [disabled]="!form.valid" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button>
-                                            </div>                                          
-                                        </div>
-                                    </div>   
-                                </form>                                            
-                            </div>
-                            <div class="tab-pane fade" id="tab-2" role="tabpanel">    
-                                <form [formGroup]="formDetalle" (ngSubmit)="agregarDetalle()">                    
-                                    <div class="form-group">
-                                        <div class="row">                                
-                                            <div class="mb-3 col-md-6">
-                                                <label for="dct_numero_detalle" class="form-label">N° Detalle</label>
-                                                <input type="text" class="form-control" id="dct_numero_detalle"  formControlName="dct_numero_detalle" placeholder="Numero de pedido" maxlength="10">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <br>
-                                                <div class="input-group mb-3">
-                                                    <label for="dct_producto" class="input-group-text" >Producto</label>
-                                                    <input type="text" class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo Producto" maxlength="25" >
-                                                    <div class="input-group-append">
-                                                      <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarProducto()"><i class="fas fa-search"></i></button>
-                                                      <app-buscador #buscador></app-buscador>
-                                                    </div>
+                                        
+                                    </div>                                                                             
+                                </div>
+                                <div class="tab-pane fade" id="tab-2" role="tabpanel"> 
+                                    <div class="form-group">   
+                                        <div formGroupName="formDetalle">                      
+                                            <div class="row">                                
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="dct_numero_detalle" class="form-label">N° Detalle</label>
+                                                    <input type="text" class="form-control" id="dct_numero_detalle"  formControlName="dct_numero_detalle" placeholder="Numero de pedido" maxlength="10">
                                                 </div>
-                                            </div>    
-                                            <div class="mb-3 col-md-6">
-                                                <label for="dct_cantidad" class="form-label">Cantidad</label>
-                                                <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="mb-3 col-md-6">
-                                                <label for="dct_precio_descuento" class="form-label">Precio</label>
-                                                <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="0.00">
-                                            </div>              
-                                            <div class="mb-3 col-md-6">
-                                                <label for="dct_total" class="form-label">Total</label>
-                                                <input type="number" class="form-control" id="dct_total" formControlName="dct_total" placeholder="0.00" max="5000">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <br>
+                                                    <div class="input-group mb-3">
+                                                        <label for="dct_producto" class="input-group-text" >Producto</label>
+                                                        <input type="text" class="form-control" id="dct_producto" formControlName="dct_producto" placeholder="Codigo Producto" maxlength="25" >
+                                                        <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarProducto()"><i class="fas fa-search"></i></button>
+                                                        <app-buscador #buscador></app-buscador>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="dct_cantidad" class="form-label">Cantidad</label>
+                                                    <input type="text"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >
+                                                </div>
                                             </div>
-                                        </div>
-                                        <br>
-                                        <div class="row justify-content-start">
-                                            <div class="col">                                                 
-                                                <button type="submit" [disabled]="!formDetalle.valid" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
-                                            </div>                                          
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="dct_precio_descuento" class="form-label">Precio</label>
+                                                    <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="0.00">
+                                                </div>
+                                                <input #total_detalle type="hidden">              
+                                            </div>
+                                            <br>
+                                            <div class="row justify-content-start">
+                                                <div class="col">                                                 
+                                                    <button (click)="agregarDetalle()" [disabled]="!this.formPedido.get('formDetalle')!.valid" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+                                                </div>                                          
+                                            </div>                                           
                                         </div>
                                     </div>  
-                                </form>  
-                                <br><br>
-                                <div>                                      
-                                    <table class="table table-hover my-0">
-                                        <tr>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio</th>
-                                            <th>Total</th>
-                                        </tr>
-                                        <tr *ngFor ="let item of detalle_pedidos">
-                                            <td>{{ item.dct_producto }}</td>
-                                            <td>{{ item.dct_cantidad }}</td>
-                                            <td>{{ item.dct_precio_descuento }}</td>
-                                            <td>{{ item.dct_total }}</td>
-                                        </tr>
-                                    </table>
-                                </div>                 
-                            </div>
+                                    <br><br>
+                                    <div class="row">                                      
+                                        <table class="table table-hover my-0">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor ="let item of detalle_pedidos">
+                                                    <td>{{ item.dct_producto }}</td>
+                                                    <td>{{ item.dct_cantidad }}</td>
+                                                    <td>{{ item.dct_precio_descuento }}</td>
+                                                    <td>{{ item.dct_total }}</td>
+                                                </tr>
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                    <br><br>
+                                    <div class="row justify-content-end">
+                                        <div class="mb-3 col-md-3">
+                                            <input [(ngModel)] = "total_pedido" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                                        </div> 
+                                    </div>                
+                                </div>                        
+                            </div>                            
                         </div>
-                    </div>
-                </div> 
+                        <div class="card-footer text-right">      
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" [disabled]="!validarPedido()" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button> 
+                                </div>
+                            </div>                                                 
+                        </div>
+                    </form>
+                </div>           
             </div>
         </div>
     </div> 

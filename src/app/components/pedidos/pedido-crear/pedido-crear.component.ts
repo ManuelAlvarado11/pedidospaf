@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -5,9 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { DetallePedido } from 'src/app/models/detallePedido';
 import { Pedido } from 'src/app/models/pedido';
+import { Producto } from 'src/app/models/producto';
 import { BodegaService } from 'src/app/services/bodega.service';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { TipoDocumentoService } from 'src/app/services/tipo-documento.service';
+import { TipoPrecioService } from 'src/app/services/tipo-precio.service';
 import { VendedorService } from 'src/app/services/vendedor.service';
 
 
@@ -22,6 +25,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   pedido!: Pedido;
   detalle_pedidos!: DetallePedido[];
+  productoSeleccionado!: Producto;
   total_pedido = 0;
   cot_empresa = "";cot_numero = "";cot_pedido="";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
@@ -33,6 +37,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               private pedidoService: PedidoService,
               public bodegaService:BodegaService,
               public tipoDocumentoService:TipoDocumentoService,
+              public tipoPrecioService: TipoPrecioService,
               public vendedorService:VendedorService) { 
     //Declaracion de FormPedido
     this.formPedido = this.formBuilder.group({
@@ -46,6 +51,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         dct_numero_detalle: ['',[Validators.required,Validators.maxLength(25)]],
         dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
         dct_cantidad: ['',[Validators.required,Validators.max(10000)]],
+        dct_tipo_precio: ['',[Validators.required,Validators.max(10000)]],
         dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]]
       })
     });
@@ -77,10 +83,11 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     });
 
     //CARGAR PRODUCTO
-    this.pedidoService.obtenerProducto().subscribe(data => {
+    this.pedidoService.obtenerProducto().subscribe(data => {    
       this.formPedido.get('formDetalle')!.patchValue({
         dct_producto: data.pro_codigo
       });
+      this.productoSeleccionado = data;
     });
 
     //CARGAR BODEGAS
@@ -91,6 +98,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
     //CARGAR TIPO DOCUMENTO
     this.tipoDocumentoService.obtenerTipoDocumentos()
+
+    //CARGAR TIPO PRECIOS
+    this.tipoPrecioService.obtenerTipoPrecios()
   
   }
   
@@ -138,6 +148,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_numero_detalle: this.formPedido.get('formDetalle.dct_numero_detalle')!.value,
       dct_producto: this.formPedido.get('formDetalle.dct_producto')!.value,
       dct_cantidad: this.formPedido.get('formDetalle.dct_cantidad')!.value,
+      dct_tipo_precio: this.formPedido.get('formDetalle.dct_tipo_precio')!.value,
+      dct_precio_lista:0,
       dct_precio_descuento: this.formPedido.get('formDetalle.dct_precio_descuento')!.value,
       dct_total: 0,
     }
@@ -185,6 +197,35 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       valido = true;
     }
     return valido;
+  }
+
+  seleccionarPrecio(e: any) {
+    console.log(e.target.value);
+    let precio = 0.00;
+    let tipo = e.target.value;
+
+    //HACER UN FOR DE LOS TIPO DE PRECIOS Y NO EL CASE
+    switch (tipo){
+      case '01':
+        precio = this.productoSeleccionado.fac_asignacion_precios[0].asp_precio;
+        break;
+      case '02':
+        precio = this.productoSeleccionado.fac_asignacion_precios[1].asp_precio;
+        break;
+      case '03':
+        precio = this.productoSeleccionado.fac_asignacion_precios[2].asp_precio;
+        break;
+      case '04':
+        precio = this.productoSeleccionado.fac_asignacion_precios[3].asp_precio;
+        break;
+      case '04':
+        precio = this.productoSeleccionado.fac_asignacion_precios[3].asp_precio;
+        break;
+    }
+
+    this.formPedido.get('formDetalle')!.patchValue({
+      dct_precio_descuento: precio
+    });
   }
 
   //Operaciones aritmeticas

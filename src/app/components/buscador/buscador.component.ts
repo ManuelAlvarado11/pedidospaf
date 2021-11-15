@@ -71,6 +71,7 @@ export class BuscadorComponent implements OnInit{
         break;
       case 2:
         this.pedidoService.seleccionarProducto(item);
+        console.log(item);
         this.modal.dismissAll();
         break;
     }

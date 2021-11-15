@@ -114,6 +114,14 @@
                                             </div>
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
+                                                    <label for="dct_tipo_precio" class="form-label">Tipo precio</label>
+                                                    <select class="form-control select2" style="width: 100%;" id="dct_tipo_precio" formControlName="dct_tipo_precio" (change)="seleccionarPrecio($event!)">
+                                                    <option [value]="item.tip_codigo" *ngFor="let item of tipoPrecioService.list">
+                                                        {{ item.tip_descripcion }}
+                                                    </option>
+                                                    </select>
+                                                </div>  
+                                                <div class="mb-3 col-md-6">
                                                     <label for="dct_precio_descuento" class="form-label">Precio</label>
                                                     <input type="number" class="form-control" id="dct_precio_descuento" formControlName="dct_precio_descuento" placeholder="0.00">
                                                 </div>

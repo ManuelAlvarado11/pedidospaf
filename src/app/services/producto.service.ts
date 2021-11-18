@@ -9,6 +9,7 @@ export class ProductoService {
   myAppUrl = 'http://localhost:60215/';
   myApiUrl = 'api/fac_productos/';
   list!: Producto[];
+  producto!: Producto;
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   constructor(private http: HttpClient) { }
@@ -16,6 +17,11 @@ export class ProductoService {
   obtenerProductos(){
     this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa).
                   toPromise().then(data => {this.list = data as Producto[]; });
+  }
+
+  obtenerProducto(codigo: any){
+    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa + '/' + codigo).
+                  toPromise().then(data => {this.producto = data as Producto;});
   }
 
 }

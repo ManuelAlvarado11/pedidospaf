@@ -9,6 +9,7 @@ import { Pedido } from 'src/app/models/pedido';
 import { Producto } from 'src/app/models/producto';
 import { BodegaService } from 'src/app/services/bodega.service';
 import { PedidoService } from 'src/app/services/pedido.service';
+import { ProductoService } from 'src/app/services/producto.service';
 import { TipoDocumentoService } from 'src/app/services/tipo-documento.service';
 import { TipoPrecioService } from 'src/app/services/tipo-precio.service';
 import { VendedorService } from 'src/app/services/vendedor.service';
@@ -25,8 +26,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   pedido!: Pedido;
   detalle_pedidos!: DetallePedido[];
-  productoSeleccionado!: Producto;
   total_pedido = 0;
+  producto_seleccionado!: Producto;
+  pro_codigo_seleccionado= "";
   cot_empresa = "";cot_numero = "";cot_pedido="";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -35,6 +37,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               private toastr: ToastrService,
               private route: Router,
               private pedidoService: PedidoService,
+              private productoService: ProductoService,
               public bodegaService:BodegaService,
               public tipoDocumentoService:TipoDocumentoService,
               public tipoPrecioService: TipoPrecioService,
@@ -83,12 +86,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     });
 
     //CARGAR PRODUCTO
-    this.pedidoService.obtenerProducto().subscribe(data => {    
+    this.pedidoService.obtenerProducto().subscribe(data => { 
       this.formPedido.get('formDetalle')!.patchValue({
-        dct_producto: data.pro_codigo
+        dct_producto: data
       });
-      this.productoSeleccionado = data;
     });
+    
 
     //CARGAR BODEGAS
     this.bodegaService.obtenerBodegas();
@@ -199,28 +202,17 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     return valido;
   }
 
+  //Al elegir tipo de precio
   seleccionarPrecio(e: any) {
-    console.log(e.target.value);
+    let tipoSeleccionado = e.target.value;
     let precio = 0.00;
-    let tipo = e.target.value;
-
-    //HACER UN FOR DE LOS TIPO DE PRECIOS Y NO EL CASE
-    switch (tipo){
-      case '01':
-        precio = this.productoSeleccionado.fac_asignacion_precios[0].asp_precio;
-        break;
-      case '02':
-        precio = this.productoSeleccionado.fac_asignacion_precios[1].asp_precio;
-        break;
-      case '03':
-        precio = this.productoSeleccionado.fac_asignacion_precios[2].asp_precio;
-        break;
-      case '04':
-        precio = this.productoSeleccionado.fac_asignacion_precios[3].asp_precio;
-        break;
-      case '04':
-        precio = this.productoSeleccionado.fac_asignacion_precios[3].asp_precio;
-        break;
+   
+    for(var i = 0; i < this.productoService.producto.fac_asignacion_precios.length; i++){
+      let tipoPrecio = this.productoService.producto.fac_asignacion_precios[i].asp_tipo_precio;
+      
+      if(tipoSeleccionado == tipoPrecio){
+        precio = this.productoService.producto.fac_asignacion_precios[i].asp_precio;
+      }
     }
 
     this.formPedido.get('formDetalle')!.patchValue({

@@ -4,6 +4,9 @@ import { PedidoService } from 'src/app/services/pedido.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
 import { Cliente } from 'src/app/models/cliente';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { Producto } from 'src/app/models/producto';
+
 
 
 @Component({
@@ -66,12 +69,16 @@ export class BuscadorComponent implements OnInit{
   seleccionar(item: any){
     switch (this.opcion){
       case 1:
+        let cliente = new  Cliente();
+        //CREAR CLIENTE PARA ENVIARLO COMO ITEM
         this.pedidoService.seleccionarCliente(item);
         this.modal.dismissAll();
         break;
       case 2:
+        let producto = new  Producto();
+        //CREAR PRODUCTO PARA ENVIARLO COMO ITEM
         this.pedidoService.seleccionarProducto(item);
-        console.log(item);
+        this.productoService.obtenerProducto(item);
         this.modal.dismissAll();
         break;
     }

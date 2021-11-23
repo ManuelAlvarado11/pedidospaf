@@ -69,14 +69,10 @@ export class BuscadorComponent implements OnInit{
   seleccionar(item: any){
     switch (this.opcion){
       case 1:
-        let cliente = new  Cliente();
-        //CREAR CLIENTE PARA ENVIARLO COMO ITEM
         this.pedidoService.seleccionarCliente(item);
         this.modal.dismissAll();
         break;
       case 2:
-        let producto = new  Producto();
-        //CREAR PRODUCTO PARA ENVIARLO COMO ITEM
         this.pedidoService.seleccionarProducto(item);
         this.productoService.obtenerProducto(item);
         this.modal.dismissAll();

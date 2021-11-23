@@ -1,4 +1,3 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,8 +26,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
   detalle_pedidos!: DetallePedido[];
   total_pedido = 0;
-  producto_seleccionado!: Producto;
-  pro_codigo_seleccionado= "";
   cot_empresa = "";cot_numero = "";cot_pedido="";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -88,7 +85,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     //CARGAR PRODUCTO
     this.pedidoService.obtenerProducto().subscribe(data => { 
       this.formPedido.get('formDetalle')!.patchValue({
-        dct_producto: data
+        dct_producto: data.pro_codigo
       });
     });
     
@@ -105,6 +102,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     //CARGAR TIPO PRECIOS
     this.tipoPrecioService.obtenerTipoPrecios()
   
+    console.log(this.userSesion);
+    
   }
   
   ngOnDestroy(){

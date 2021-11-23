@@ -19,8 +19,8 @@ export class ProductoService {
                   toPromise().then(data => {this.list = data as Producto[]; });
   }
 
-  obtenerProducto(codigo: any){
-    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa + '/' + codigo).
+  obtenerProducto(producto: Producto){
+    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa + '/' + producto.pro_codigo).
                   toPromise().then(data => {this.producto = data as Producto;});
   }
 

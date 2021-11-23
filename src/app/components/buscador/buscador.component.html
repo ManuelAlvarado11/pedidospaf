@@ -33,7 +33,7 @@
                     <th>Acciones</th>
                 </thead>           
                 <tbody *ngIf="productoService.list?.length != 0">          
-                    <tr *ngFor="let item of productoService.list" (click)="seleccionar(item.pro_codigo)">
+                    <tr *ngFor="let item of productoService.list" (click)="seleccionar(item)">
                         <td>{{ item.pro_codigo }}</td>
                         <td>{{ item.pro_nombre }}</td>
                         <td>{{ item.pro_grupo }}</td>

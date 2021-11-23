@@ -3,9 +3,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
-import { Cliente } from 'src/app/models/cliente';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
-import { Producto } from 'src/app/models/producto';
 
 
 

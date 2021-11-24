@@ -220,9 +220,15 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     }
     
     //Agregar detalle
-    this.calcularTotales(detalle_pedido);
     this.detalle_pedidos.push(detalle_pedido);
+    this.calcularTotales();
     this.formPedido.get('formDetalle')!.reset();
+  }
+
+  eliminarDetalle(detalle: DetallePedido){
+    let index = this.detalle_pedidos.indexOf(detalle);
+    this.detalle_pedidos.splice(index,1);
+    this.calcularTotales();
   }
 
   //Se valida por separado porque posee un formulario Interno de Detalle
@@ -260,9 +266,14 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
 
   //Operaciones aritmeticas
-  calcularTotales(detalle: DetallePedido){
-    detalle.dct_total = detalle.dct_cantidad*detalle.dct_precio_descuento;
-    this.total_pedido = this.total_pedido + detalle.dct_total;
+  calcularTotales(){
+    let total = 0.00;
+    for(let i=0; i< this.detalle_pedidos.length; i++){
+      this.detalle_pedidos[i].dct_total = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
+      total = total + this.detalle_pedidos[i].dct_total;
+    } 
+
+    this.total_pedido = total;
   }
 
   regresarListado(){

@@ -138,6 +138,7 @@
                                                     <th>Cantidad</th>
                                                     <th>Precio</th>
                                                     <th>Total</th>
+                                                    <th>Accion</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -146,6 +147,7 @@
                                                     <td>{{ item.dct_cantidad }}</td>
                                                     <td>{{ item.dct_precio_descuento }}</td>
                                                     <td>{{ item.dct_total }}</td>
+                                                    <td><i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarDetalle(item)" style="cursor: pointer;"></i></td>
                                                 </tr>
                                             </tbody>
                                             

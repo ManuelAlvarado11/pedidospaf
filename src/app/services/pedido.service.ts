@@ -30,7 +30,7 @@ export class PedidoService {
   }
 
   //ELIMINAR
-  eliminarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string){
+  eliminarPedido(cot_empresa: string,cot_numero: string){
     return this.http.delete<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero);
   }
 

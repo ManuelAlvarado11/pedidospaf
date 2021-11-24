@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { Cliente } from '../models/cliente';
 import { Pedido } from '../models/pedido';
 import { Producto } from '../models/producto';
@@ -25,13 +25,13 @@ export class PedidoService {
   }
 
   //ACTUALIZAR
-  actualizarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string, pedido: Pedido): Observable<Pedido>{
-    return this.http.put<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero+"/"+cot_pedido, pedido);
+  actualizarPedido(cot_empresa: string,cot_numero: string, pedido: Pedido): Observable<Pedido>{
+    return this.http.put<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero, pedido);
   }
 
   //ELIMINAR
   eliminarPedido(cot_empresa: string,cot_numero: string, cot_pedido: string){
-    return this.http.delete<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero+"/"+cot_pedido);
+    return this.http.delete<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero);
   }
 
   //LISTAR
@@ -41,26 +41,33 @@ export class PedidoService {
   }
 
   //EDITAR PEDIDO
-  obtenerPedido(): Observable<Pedido>{
-    return this.actualizaFormulario.asObservable();
-  }
   actualizar(pedido: any){
     this.actualizaFormulario.next(pedido);
   }
+  obtenerPedido(): Observable<Pedido>{
+    return this.actualizaFormulario.asObservable();
+  }
 
   //BUSQUEDA DE CLIENTE
-  obtenerCliente():Observable<Cliente>{
-    return this.clienteForm.asObservable();
-  }
   seleccionarCliente(cliente: any){
     this.clienteForm.next(cliente);
   }
+  obtenerCliente():Observable<Cliente>{
+    return this.clienteForm.asObservable();
+  }
 
   //BUSQUEDA DE PRODUCTO
+  seleccionarProducto(producto: any){
+    this.productoForm.next(producto);
+  }
   obtenerProducto():Observable<Producto>{
     return this.productoForm.asObservable();
   }
-  seleccionarProducto(producto: any){
-    this.productoForm.next(producto);
+
+  Cancelar(){
+    let objeto = {} as any;
+    this.actualizaFormulario.next(objeto);
+    this.productoForm.next(objeto);
+    this.clienteForm.next(objeto);
   }
 }

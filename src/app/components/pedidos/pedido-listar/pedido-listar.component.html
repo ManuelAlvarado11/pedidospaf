@@ -30,7 +30,7 @@
                                             <td>{{ pedido.cot_total }}</td>
                                             <td><span class="badge bg-success">Done</span></td>
                                             <td>
-                                                <i class="far fa-edit fa-lg text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i>
+                                                <a [routerLink]="['/home/pedidos/crear']"><i class="far fa-edit fa-lg text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i></a>
                                                 <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero,pedido.cot_pedido)" style="cursor: pointer;"></i>
                                             </td>
                                         </tr>

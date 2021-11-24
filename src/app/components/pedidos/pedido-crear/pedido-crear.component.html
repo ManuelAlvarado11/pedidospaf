@@ -18,18 +18,24 @@
                             <div class="tab-content">                        
                                 <div class="tab-pane fade show active" id="tab-1" role="tabpanel">                              
                                     <div class="form-group">
-                            
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
-                                                <label for="cot_fecha" class="form-label">Fecha</label>
-                                                <input type="date" class="form-control" id="cot_fecha">
+                                                <label for="cot_pedido" class="form-label">Numero pedido</label>
+                                                <input type="text" class="form-control" id="cot_pedido" formControlName="cot_pedido">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="fecha_pedido" class="form-label">Fecha</label>                                      
+                                                <input (ngModel) = "fecha_pedido" [ngModelOptions]="{standalone: true}" type="date" class="form-control">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="cot_bodega" class="form-label">Bodega</label>
-                                                <select class="form-control select2" style="width: 100%;" id="cot_bodega" formControlName="cot_bodega">
-                                                <option [value]="item.bod_codigo" *ngFor="let item of bodegaService.list">
-                                                    {{ item.bod_descripcion }}
-                                                </option>
+                                                <select class="form-control select2" style="width: 100%;" id="cot_bodega" formControlName="cot_bodega" ngValue="cot_bodega">
+                                                    <option selected>Seleccione ...</option>
+                                                    <option [ngValue]="item.bod_codigo" *ngFor="let item of bodegaService.list">
+                                                        {{ item.bod_descripcion }}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -37,17 +43,19 @@
                                             <div class="mb-3 col-md-6">
                                                 <label for="cot_vendedor" class="form-label">Vendedor</label>
                                                 <select class="form-control select2" style="width: 100%;" id="cot_vendedor" formControlName="cot_vendedor">
-                                                <option [value]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
-                                                    {{ item.vcn_nombre }}
-                                                </option>
+                                                    <option selected>Seleccione ...</option> 
+                                                    <option [ngValue]="item.vcn_codigo" *ngFor="let item of vendedorService.list">
+                                                        {{ item.vcn_nombre }}
+                                                    </option>
                                                 </select>
                                             </div>  
                                             <div class="mb-3 col-md-6">
                                                 <label for="cot_tipo_documento" class="form-label">Tipo Documento</label>
                                                 <select class="form-control select2" style="width: 100%;" id="cot_tipo_documento" formControlName="cot_tipo_documento">
-                                                <option [value]="item.ftd_codigo" *ngFor="let item of tipoDocumentoService.list">
-                                                    {{ item.ftd_descripcion }}
-                                                </option>
+                                                    <option selected>Seleccione ...</option>
+                                                    <option [ngValue]="item.ftd_codigo" *ngFor="let item of tipoDocumentoService.list">
+                                                        {{ item.ftd_descripcion }}
+                                                    </option>
                                                 </select>
                                             </div>                                                                                                                                                          
                                         </div>                                            
@@ -56,10 +64,10 @@
                                                 <br>
                                                 <div class="input-group mb-3">
                                                     <label for="cot_cliente" class="input-group-text" >Cliente</label>
-                                                    <input type="text" class="form-control" id="cot_cliente" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10">
+                                                    <input type="text" class="form-control" formControlName="cot_cliente" placeholder="Codigo Cliente" maxlength="10">
                                                     <div class="input-group-append">
-                                                    <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
-                                                    <app-buscador #buscador></app-buscador>
+                                                        <button class="btn btn-outline-secondary" type="button" (click)="buscador.buscarCliente()"><i class="fas fa-search"></i></button>
+                                                        <app-buscador #buscador></app-buscador>
                                                     </div>
                                                 </div>
                                             </div>     
@@ -101,9 +109,10 @@
                                                 <div class="mb-3 col-md-6">
                                                     <label for="dct_tipo_precio" class="form-label">Tipo precio</label>
                                                     <select class="form-control select2" style="width: 100%;" id="dct_tipo_precio" formControlName="dct_tipo_precio" (change)="seleccionarPrecio($event!)">
-                                                    <option [value]="item.tip_codigo" *ngFor="let item of tipoPrecioService.list">
-                                                        {{ item.tip_descripcion }}
-                                                    </option>
+                                                        <option selected>Seleccione ...</option>
+                                                        <option [value]="item.tip_codigo" *ngFor="let item of tipoPrecioService.list">
+                                                            {{ item.tip_descripcion }}
+                                                        </option>
                                                     </select>
                                                 </div>  
                                                 <div class="mb-3 col-md-6">
@@ -154,7 +163,8 @@
                         <div class="card-footer text-right">      
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button type="submit" [disabled]="!validarPedido()" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button> 
+                                    <button type="submit" [disabled]="!validarPedido()" class="btn btn-success"><i class="fas fa-database"></i> Guardar</button>                                   
+                                    <a class="btn btn-danger" (click)="regresarListado()" [routerLink]="['/home/pedidos/listar']"><i class="fas fa-cancel"></i> Cancelar</a>
                                 </div>
                             </div>                                                 
                         </div>

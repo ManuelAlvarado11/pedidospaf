@@ -4,6 +4,7 @@ import { DetallePedido } from "./detallePedido";
     cot_empresa!: string;
     cot_numero!: string;
     cot_pedido!: string;
+    cot_fecha!: Date;
     cot_vendedor!: string;
     cot_bodega!: string;
     cot_cliente!: string;

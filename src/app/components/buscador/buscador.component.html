@@ -1,0 +1,65 @@
+<ng-template #content let-modal >
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- Clientes -->
+        <div *ngIf = "opcion==1">
+            <table class="table table-bordered table-striped">
+                <thead> 
+                    <th>{{encabezados[0].encabezado_1}}</th>
+                    <th>{{encabezados[0].encabezado_2}}</th>
+                    <th>{{encabezados[0].encabezado_3}}</th>
+                </thead>           
+                <tbody>          
+                    <tr *ngFor="let item of clienteService.list" (click)="seleccionar(item)">
+                        <td>{{ item.cli_codigo }}</td>
+                        <td>{{ item.cli_nombre }}</td>
+                        <td>{{ item.cli_registro }}</td>
+                    </tr>                 
+                </tbody>  
+            </table>
+        </div>   
+        <!-- Productos -->
+        <div *ngIf = "opcion==2">
+            <table class="table table-bordered table-striped">
+                <thead> 
+                    <th>{{encabezados[0].encabezado_1}}</th>
+                    <th>{{encabezados[0].encabezado_2}}</th>
+                    <th>{{encabezados[0].encabezado_3}}</th>
+                    <th>Acciones</th>
+                </thead>           
+                <tbody *ngIf="productoService.list?.length != 0">          
+                    <tr *ngFor="let item of productoService.list" (click)="seleccionar(item)">
+                        <td>{{ item.pro_codigo }}</td>
+                        <td>{{ item.pro_nombre }}</td>
+                        <td>{{ item.pro_grupo }}</td>
+                        <td><span class="badge bg-success">Done</span></td>
+                    </tr>                 
+                </tbody>  
+            </table>
+        </div>
+       
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+</ng-template>
+
+
+<!-- Page specific script -->
+<script>
+    // Basic example
+    $(document).ready(function () {
+        $('#dtBasicExample').DataTable({
+            "paging": true // false to disable pagination (or any other option)
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+
+
+  

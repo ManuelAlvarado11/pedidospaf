@@ -1,22 +1,20 @@
-<main class="content">
-    <div class="container-fluid p-0">
-        <div class="row mb-2 mb-xl-3">
-            <div class="col-auto d-none d-sm-block">
-                <h3><strong>Analytics</strong> Dashboard</h3>
-            </div>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Registro Pedidos</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Pedidos</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
-            <div class="col-auto ml-auto text-right mt-n1">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                        <li class="breadcrumb-item"><a href="#">AdminKit</a></li>
-                        <li class="breadcrumb-item"><a href="#">Dashboards</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Analytics</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        <div class="row">            
-            <app-pedido-listar></app-pedido-listar>
-        </div>
-    </div>
-</main>
+<!-- Main content -->
+<router-outlet></router-outlet>

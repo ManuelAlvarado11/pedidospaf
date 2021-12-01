@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Cliente } from '../models/cliente';
 import { Pedido } from '../models/pedido';
 import { Producto } from '../models/producto';
@@ -9,7 +10,7 @@ import { Producto } from '../models/producto';
   providedIn: 'root'
 })
 export class PedidoService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_pedidos/';
   list!: Pedido[];
   private actualizaFormulario = new BehaviorSubject<Pedido>({} as any);

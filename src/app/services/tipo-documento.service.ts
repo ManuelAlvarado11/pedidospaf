@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { TipoDocumento } from '../models/tipoDocumento';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoDocumentoService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_tipo_documento/';
   list!: TipoDocumento[];
   userSesion = JSON.parse(localStorage.getItem('usuario')!);

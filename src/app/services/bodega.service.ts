@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Bodega } from '../models/bodega';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BodegaService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_bodegas/';
   list!: Bodega[];
   userSesion = JSON.parse(localStorage.getItem('usuario')!);

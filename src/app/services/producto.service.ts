@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Producto } from '../models/producto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_productos/';
   list!: Producto[];
   producto!: Producto;

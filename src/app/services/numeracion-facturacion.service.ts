@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { numeracionFacturacion } from '../models/numeracionFacturacion';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NumeracionFacturacionService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/gen_numeros_facturacion/';
   list!: numeracionFacturacion[];
   numeracion!: Observable<numeracionFacturacion>;

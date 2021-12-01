@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Login } from '../models/login';
 import { UserResponse } from '../models/userResponse';
 
@@ -17,7 +18,7 @@ const httOption = {
 })
 
 export class ApiauthService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/gen_usuarios/login/';
   private userSubject: BehaviorSubject<UserResponse>;
   public user!: Observable<UserResponse>;

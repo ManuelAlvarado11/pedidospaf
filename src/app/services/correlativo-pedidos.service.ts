@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { CnfCorrelativoPedidos } from '../models/cnfCorrelativoPedidos';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CorrelativoPedidosService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_cnf_correlativos_pedidos/';
   list!: CnfCorrelativoPedidos[];
   correlativo!: CnfCorrelativoPedidos;

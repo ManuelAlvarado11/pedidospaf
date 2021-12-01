@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { TipoPrecio } from '../models/tipoPrecio';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoPrecioService {
-  myAppUrl = 'http://localhost:60215/';
+  myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_tipo_precio/';
   list!: TipoPrecio[];
   userSesion = JSON.parse(localStorage.getItem('usuario')!);

@@ -36,9 +36,12 @@ export class PedidoService {
   }
 
   //LISTAR
-  obtenerPedidos(){
+  obtenerPedidosEnList(){
     this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa).
                   toPromise().then(data => { this.list = data as Pedido[]; });
+  }
+  obtenerPedidos():Observable<any>{
+    return this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa);
   }
 
   //EDITAR PEDIDO

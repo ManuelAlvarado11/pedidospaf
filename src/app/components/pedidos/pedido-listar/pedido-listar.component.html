@@ -9,35 +9,44 @@
                     </div>
             
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover my-0">
-                                    <thead> 
-                                        <th>Pedido</th>
-                                        <th>Vendedor</th>
-                                        <th>Bodega</th>
-                                        <th>Cliente</th>
-                                        <th>Total</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let pedido of pedidoService.list">
-                                            <td>{{ pedido.cot_pedido }}</td>
-                                            <td>{{ pedido.cot_vendedor }}</td>
-                                            <td>{{ pedido.cot_bodega }}</td>
-                                            <td>{{ pedido.cot_cliente }}</td>
-                                            <td>{{ pedido.cot_total }}</td>
-                                            <td><span class="badge bg-success">Done</span></td>
-                                            <td>
-                                                <a [routerLink]="['/home/pedidos/crear']"><i class="far fa-edit fa-lg text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i></a>
-                                                <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero)" style="cursor: pointer;"></i>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div *ngIf="isDataAvailable">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-hover my-0" datatable [dtOptions]="dtOptions">
+                                        <thead> 
+                                            <tr>
+                                                <th>Pedido</th>
+                                                <th>Vendedor</th>
+                                                <th>Bodega</th>
+                                                <th>Cliente</th>
+                                                <th>Total</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>   
+                                            </tr>         
+                                        </thead>
+                                        <tbody *ngIf="pedidos.length != 0">
+                                            <tr *ngFor="let pedido of pedidos">
+                                                <td>{{ pedido.cot_pedido }}</td>
+                                                <td>{{ pedido.cot_vendedor }}</td>
+                                                <td>{{ pedido.cot_bodega }}</td>
+                                                <td>{{ pedido.cot_cliente }}</td>
+                                                <td>{{ pedido.cot_total }}</td>
+                                                <td><span class="badge bg-success">Done</span></td>
+                                                <td>
+                                                    <a [routerLink]="['/home/pedidos/crear']"><i class="far fa-edit fa-lg text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i></a>
+                                                    <i class="far fa-trash-alt fa-lg text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero)" style="cursor: pointer;"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="pedidos.length == 0">
+                                            <tr>
+                                              <td colspan="3" class="no-data-available">No hay registros!</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        </div>               
                         <!-- /.row -->
                     </div>
                       <!-- ./card-body --> 

@@ -15,6 +15,7 @@ export class BuscadorComponent implements OnInit{
   @ViewChild("content") content: any;
   @Input() title = "";
   dtOptions: DataTables.Settings = {};
+  isDataAvailable:boolean = false;
   opcion = 0;
   encabezados: any[] = []; clientes: any[] = []; productos: any[] = [];
 

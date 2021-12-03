@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -6,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'PedidosFrontend';
+  location!: Location;
+
+  ngOnInit() {
+    if (environment.production) {
+      if (location.protocol === 'http:') {
+        window.location.href = location.href.replace('http', 'https');
+      }
+    }    
+  }
 }

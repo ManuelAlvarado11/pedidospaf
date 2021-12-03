@@ -8,12 +8,26 @@ import { PedidoService } from 'src/app/services/pedido.service';
   styleUrls: ['./pedido-listar.component.css']
 })
 export class PedidoListarComponent implements OnInit {
+  dtOptions: DataTables.Settings = {};
+  isDataAvailable:boolean = false;
+  pedidos: any[] = [];
 
   constructor(public pedidoService: PedidoService, 
               public toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.pedidoService.obtenerPedidos();
+     //CARGAR PEDIDOS
+    this.pedidoService.obtenerPedidos().subscribe(data => {
+      this.pedidos = data;
+      this.isDataAvailable = true;
+    });
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      lengthMenu : [5, 10, 25],
+      processing: true
+    };
   }
 
   eliminarPedido(cot_empresa: string,cot_numero: string){

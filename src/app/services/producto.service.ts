@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Producto } from '../models/producto';
 
@@ -15,9 +16,13 @@ export class ProductoService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerProductos(){
+  obtenerProductosEnList(){
     this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa).
                   toPromise().then(data => {this.list = data as Producto[]; });
+  }
+
+  obtenerProductos(): Observable<any>{
+    return this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa);
   }
 
   obtenerProducto(producto: Producto){

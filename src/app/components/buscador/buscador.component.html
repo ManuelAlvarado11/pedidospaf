@@ -8,39 +8,52 @@
     <div class="modal-body">
         <!-- Clientes -->
         <div *ngIf = "opcion==1">
-            <table class="table table-bordered table-striped">
-                <thead> 
-                    <th>{{encabezados[0].encabezado_1}}</th>
-                    <th>{{encabezados[0].encabezado_2}}</th>
-                    <th>{{encabezados[0].encabezado_3}}</th>
-                </thead>           
-                <tbody>          
-                    <tr *ngFor="let item of clienteService.list" (click)="seleccionar(item)">
+            <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                <thead>
+                    <tr>
+                        <th>{{encabezados[0].encabezado_1}}</th>
+                        <th>{{encabezados[0].encabezado_2}}</th>
+                        <th>{{encabezados[0].encabezado_3}}</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="clientes.length != 0">
+                    <tr *ngFor="let item of clientes" (click)="seleccionar(item)">
                         <td>{{ item.cli_codigo }}</td>
                         <td>{{ item.cli_nombre }}</td>
                         <td>{{ item.cli_registro }}</td>
-                    </tr>                 
-                </tbody>  
+                   </tr>
+                </tbody>
+                <tbody *ngIf="clientes.length == 0">
+                    <tr>
+                      <td colspan="3" class="no-data-available">No hay registros!</td>
+                    </tr>
+                </tbody>
             </table>
         </div>   
         <!-- Productos -->
         <div *ngIf = "opcion==2">
-            <table class="table table-bordered table-striped">
-                <thead> 
-                    <th>{{encabezados[0].encabezado_1}}</th>
-                    <th>{{encabezados[0].encabezado_2}}</th>
-                    <th>{{encabezados[0].encabezado_3}}</th>
-                    <th>Acciones</th>
-                </thead>           
-                <tbody *ngIf="productoService.list?.length != 0">          
-                    <tr *ngFor="let item of productoService.list" (click)="seleccionar(item)">
+            <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                <thead>
+                    <tr>
+                        <th>{{encabezados[0].encabezado_1}}</th>
+                        <th>{{encabezados[0].encabezado_2}}</th>
+                        <th>{{encabezados[0].encabezado_3}}</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="productos.length != 0">          
+                    <tr *ngFor="let item of productos" (click)="seleccionar(item)">
                         <td>{{ item.pro_codigo }}</td>
                         <td>{{ item.pro_nombre }}</td>
                         <td>{{ item.pro_grupo }}</td>
-                        <td><span class="badge bg-success">Done</span></td>
                     </tr>                 
                 </tbody>  
+                <tbody *ngIf="clientes.length == 0">
+                    <tr>
+                      <td colspan="3" class="no-data-available">No hay registros!</td>
+                    </tr>
+                </tbody>
             </table>
+            
         </div>
        
     </div>
@@ -49,17 +62,6 @@
     </div>
 </ng-template>
 
-
-<!-- Page specific script -->
-<script>
-    // Basic example
-    $(document).ready(function () {
-        $('#dtBasicExample').DataTable({
-            "paging": true // false to disable pagination (or any other option)
-        });
-        $('.dataTables_length').addClass('bs-select');
-    });
-</script>
 
 
   

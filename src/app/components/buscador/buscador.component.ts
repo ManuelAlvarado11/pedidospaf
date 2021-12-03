@@ -5,39 +5,48 @@ import { ClienteService } from 'src/app/services/cliente.service';
 import { ProductoService } from 'src/app/services/producto.service';
 
 
-
 @Component({
   selector: 'app-buscador',
   templateUrl: './buscador.component.html',
   styleUrls: ['./buscador.component.css']
 })
 export class BuscadorComponent implements OnInit{
+  //Variables
   @ViewChild("content") content: any;
   @Input() title = "";
-  opcion = 0;
-  encabezados= [] as any;
   dtOptions: DataTables.Settings = {};
+  opcion = 0;
+  encabezados: any[] = []; clientes: any[] = []; productos: any[] = [];
 
+  //Constructor
   constructor(private modal: NgbModal, 
               public pedidoService: PedidoService,
               public clienteService: ClienteService,
               public productoService: ProductoService) { }
-              
-  ngOnInit(): void {
-    
+  
+  //Metodos           
+  ngOnInit(): void {  
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      columns: [{ data: 'id' }, { data: 'firstName' }, { data: 'lastName' }],
+      pageLength: 5,
+      lengthMenu : [5, 10, 25],
+      processing: true
     };
+
+    //CARGAR CLIENTES
+    this.clienteService.obtenerClientes().subscribe(data => {
+      this.clientes = data;
+    });
+
+    //CARGAR PRODUCTOS
+    this.productoService.obtenerProductos().subscribe(data => {
+      this.productos = data;
+    });
     
   }
 
   buscarCliente() {
     this.opcion = 1;
-    this.clienteService.obtenerClientes();
     this.title="Buscar Cliente"
     this.encabezados= [ 
       { 
@@ -51,7 +60,6 @@ export class BuscadorComponent implements OnInit{
   
   buscarProducto(){
     this.opcion = 2;
-    this.productoService.obtenerProductos();
     this.title="Buscar Producto"
     this.encabezados= [ 
       { 

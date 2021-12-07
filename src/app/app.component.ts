@@ -7,13 +7,4 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
   title = 'PedidosFrontend';
-  location!: Location;
-
-  ngOnInit() {
-    if (environment.production) {
-      if (location.protocol === 'http:') {
-        window.location.href = location.href.replace('http', 'https');
-      }
-    }    
-  }
 }

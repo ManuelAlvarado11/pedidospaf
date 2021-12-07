@@ -6,56 +6,57 @@
         </button>
     </div>
     <div class="modal-body">
-        <!-- Clientes -->
-        <div *ngIf = "opcion==1">
-            <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
-                <thead>
-                    <tr>
-                        <th>{{encabezados[0].encabezado_1}}</th>
-                        <th>{{encabezados[0].encabezado_2}}</th>
-                        <th>{{encabezados[0].encabezado_3}}</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="clientes.length != 0">
-                    <tr *ngFor="let item of clientes" (click)="seleccionar(item)">
-                        <td>{{ item.cli_codigo }}</td>
-                        <td>{{ item.cli_nombre }}</td>
-                        <td>{{ item.cli_registro }}</td>
-                   </tr>
-                </tbody>
-                <tbody *ngIf="clientes.length == 0">
-                    <tr>
-                      <td colspan="3" class="no-data-available">No hay registros!</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>   
-        <!-- Productos -->
-        <div *ngIf = "opcion==2">
-            <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
-                <thead>
-                    <tr>
-                        <th>{{encabezados[0].encabezado_1}}</th>
-                        <th>{{encabezados[0].encabezado_2}}</th>
-                        <th>{{encabezados[0].encabezado_3}}</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="productos.length != 0">          
-                    <tr *ngFor="let item of productos" (click)="seleccionar(item)">
-                        <td>{{ item.pro_codigo }}</td>
-                        <td>{{ item.pro_nombre }}</td>
-                        <td>{{ item.pro_grupo }}</td>
-                    </tr>                 
-                </tbody>  
-                <tbody *ngIf="clientes.length == 0">
-                    <tr>
-                      <td colspan="3" class="no-data-available">No hay registros!</td>
-                    </tr>
-                </tbody>
-            </table>
-            
+        <div *ngIf="isDataAvailable">
+            <div *ngIf = "opcion==1">
+                <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>{{encabezados[0].encabezado_1}}</th>
+                            <th>{{encabezados[0].encabezado_2}}</th>
+                            <th>{{encabezados[0].encabezado_3}}</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="clientes.length != 0">
+                        <tr *ngFor="let item of clientes" (click)="seleccionar(item)">
+                            <td>{{ item.cli_codigo }}</td>
+                            <td>{{ item.cli_nombre }}</td>
+                            <td>{{ item.cli_registro }}</td>
+                       </tr>
+                    </tbody>
+                    <tbody *ngIf="clientes.length == 0">
+                        <tr>
+                          <td colspan="3" class="no-data-available">No hay registros!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>   
+            <!-- Productos -->
+            <div *ngIf = "opcion==2">
+                <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>{{encabezados[0].encabezado_1}}</th>
+                            <th>{{encabezados[0].encabezado_2}}</th>
+                            <th>{{encabezados[0].encabezado_3}}</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="productos.length != 0">          
+                        <tr *ngFor="let item of productos" (click)="seleccionar(item)">
+                            <td>{{ item.pro_codigo }}</td>
+                            <td>{{ item.pro_nombre }}</td>
+                            <td>{{ item.pro_grupo }}</td>
+                        </tr>                 
+                    </tbody>  
+                    <tbody *ngIf="clientes.length == 0">
+                        <tr>
+                          <td colspan="3" class="no-data-available">No hay registros!</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
         </div>
-       
+        <!-- Clientes -->              
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>

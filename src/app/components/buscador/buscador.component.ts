@@ -27,22 +27,25 @@ export class BuscadorComponent implements OnInit{
   
   //Metodos           
   ngOnInit(): void {  
+    
+    //CARGAR CLIENTES
+    this.clienteService.obtenerClientes().subscribe(data => {
+      this.clientes = data;
+      this.isDataAvailable = true;
+    });
+
+    //CARGAR PRODUCTOS
+    this.productoService.obtenerProductos().subscribe(data => {
+      this.productos = data;
+      this.isDataAvailable = true;
+    });
+
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 5,
       lengthMenu : [5, 10, 25],
       processing: true
     };
-
-    //CARGAR CLIENTES
-    this.clienteService.obtenerClientes().subscribe(data => {
-      this.clientes = data;
-    });
-
-    //CARGAR PRODUCTOS
-    this.productoService.obtenerProductos().subscribe(data => {
-      this.productos = data;
-    });
     
   }
 

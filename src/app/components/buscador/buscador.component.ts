@@ -15,7 +15,8 @@ export class BuscadorComponent implements OnInit{
   @ViewChild("content") content: any;
   @Input() title = "";
   dtOptions: DataTables.Settings = {};
-  isDataAvailable:boolean = false;
+  isDataClienteAvailable:boolean = false;
+  isDataProductoAvailable:boolean = false;
   opcion = 0;
   encabezados: any[] = []; clientes: any[] = []; productos: any[] = [];
 
@@ -31,13 +32,13 @@ export class BuscadorComponent implements OnInit{
     //CARGAR CLIENTES
     this.clienteService.obtenerClientes().subscribe(data => {
       this.clientes = data;
-      this.isDataAvailable = true;
+      this.isDataClienteAvailable = true;
     });
 
     //CARGAR PRODUCTOS
     this.productoService.obtenerProductos().subscribe(data => {
       this.productos = data;
-      this.isDataAvailable = true;
+      this.isDataProductoAvailable = true;
     });
 
     this.dtOptions = {

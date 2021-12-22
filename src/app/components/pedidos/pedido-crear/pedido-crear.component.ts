@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,11 +32,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
   detalle_pedidos: DetallePedido[] = [];
   total_pedido = 0;
-  
-  fecha_pedido = Date.now();
-  dateNow : Date = new Date();
-  dateNowISO = this.dateNow.toISOString();
-  dateNowMilliseconds = this.dateNow.getTime();
 
   numPedido!: numeracionFacturacion;
   numDetalle!: numeracionFacturacion;
@@ -47,6 +43,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, 
               private toastr: ToastrService,
               private route: Router,
+              public datepipe: DatePipe,
               private pedidoService: PedidoService,
               private productoService: ProductoService,
               public bodegaService:BodegaService,
@@ -55,6 +52,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               public vendedorService:VendedorService,
               public numeracionFacturacionService: NumeracionFacturacionService,
               public correlativoPedidosService: CorrelativoPedidosService) { 
+   
     //Declaracion de FormPedido
     this.formPedido = this.formBuilder.group({
       cot_fecha:['',[Validators.required,Validators.maxLength(10)]],
@@ -77,22 +75,18 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.pedidoService.obtenerPedido().subscribe(data => { 
       if(!isEmptyObject(data)){
         this.pedido=data;
-        console.log(this.pedido)
         this.cot_empresa = this.pedido.cot_empresa;
         this.cot_numero = this.pedido.cot_numero;
         this.total_pedido = this.pedido.cot_total;
         this.detalle_pedidos = this.pedido.detalles;
-        //this.fecha_pedido =this.pedido.cot_fecha;
         this.formPedido.patchValue({
           cot_pedido: this.pedido.cot_pedido,
-          cot_fecha: this.pedido.cot_fecha,
+          cot_fecha: this.datepipe.transform(this.pedido.cot_fecha, 'yyyy-MM-dd'),
           cot_bodega: this.pedido.cot_bodega,
           cot_vendedor: this.pedido.cot_vendedor,
           cot_cliente: this.pedido.cot_cliente,  
           cot_tipo_documento: this.pedido.cot_tipo_documento
         });
-
-        console.log(this.formPedido)
       } 
     });
     
@@ -160,7 +154,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_empresa: this.userSesion.empresa,
       cot_numero: (this.numPedido.num_numero).toString(),
       cot_pedido: this.corrPedido.cnf_correlativos,
-      cot_fecha: this.dateNow,
+      cot_fecha: this.formPedido.get('cot_fecha')?.value,
       cot_vendedor: this.formPedido.get('cot_vendedor')?.value,
       cot_bodega: this.formPedido.get('cot_bodega')?.value,
       cot_cliente: this.formPedido.get('cot_cliente')?.value,
@@ -169,7 +163,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_anulada: false,
       detalles: this.detalle_pedidos
     }
-    console.log(pedido);
+   
     this.pedidoService.guardarPedido(pedido).subscribe(data => {
       this.toastr.success('Registro Agregado', 'Pedido Agregado Exitosamente');
       this.regresarListado();

@@ -19,6 +19,7 @@ import { JwtInterceptor } from './security/jwt.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { BuscadorComponent } from './components/buscador/buscador.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import { BuscadorComponent } from './components/buscador/buscador.component';
     DataTablesModule 
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},DatePipe
   ],
   bootstrap: [AppComponent]
 })

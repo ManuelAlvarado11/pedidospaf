@@ -51,9 +51,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
+      cot_nombre:[''],
+      cot_direccion :[''],
       cot_tipo_documento: ['',[Validators.required,Validators.maxLength(25)]],
       formDetalle: this.formBuilder.group({
         dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
+        dct_descripcion: [''],
         dct_cantidad: ['',[Validators.required,Validators.max(10000)]],
         dct_tipo_precio: ['',[Validators.required,Validators.max(10000)]],
         dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]]
@@ -76,6 +79,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
           cot_bodega: this.pedido.cot_bodega,
           cot_vendedor: this.pedido.cot_vendedor,
           cot_cliente: this.pedido.cot_cliente,  
+          cot_nombre: this.pedido.cliente?.cli_nombre,
+          cot_direccion: this.pedido.cliente?.cli_direccion,
           cot_tipo_documento: this.pedido.cot_tipo_documento
         });
       } 
@@ -85,7 +90,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.pedidoService.obtenerCliente().subscribe(data => {
       if(!isEmptyObject(data)){
         this.formPedido.patchValue({
-          cot_cliente: data.cli_codigo
+          cot_cliente: data.cli_codigo,
+          cot_nombre: data.cli_nombre,
+          cot_direccion: data.cli_direccion
         });
       }
     });
@@ -94,7 +101,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.pedidoService.obtenerProducto().subscribe(data => { 
       if(!isEmptyObject(data)){
         this.formPedido.get('formDetalle')!.patchValue({
-          dct_producto: data.pro_codigo
+          dct_producto: data.pro_codigo,
+          dct_descripcion: data.pro_nombre
         });
       }
     });

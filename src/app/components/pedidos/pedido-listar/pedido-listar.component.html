@@ -20,7 +20,7 @@
                 </thead>
                 <tbody *ngIf="pedidos.length != 0">
                     <tr *ngFor="let pedido of pedidos">
-                        <td>{{ pedido.cot_fecha | date :  "dd-MM-y" }}</td> 
+                        <td>{{ pedido.cot_fecha | date :  "dd/MM/y" }}</td> 
                         <td>{{ pedido.cot_pedido }}</td>                                              
                         <td>{{ pedido.cot_bodega }}</td>
                         <td>{{ pedido.cot_cliente }}</td>

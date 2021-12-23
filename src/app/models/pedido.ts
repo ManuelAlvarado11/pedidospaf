@@ -1,3 +1,4 @@
+import { Cliente } from "./cliente";
 import { DetallePedido } from "./detallePedido";
 
  export class Pedido {
@@ -11,5 +12,6 @@ import { DetallePedido } from "./detallePedido";
     cot_tipo_documento!: string;
     cot_total!: number;
     cot_anulada!: boolean;
+    cliente?: Cliente;
     detalles!: DetallePedido[];
  }

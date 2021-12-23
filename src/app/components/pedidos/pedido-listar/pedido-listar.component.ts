@@ -34,8 +34,10 @@ export class PedidoListarComponent implements OnInit {
   eliminarPedido(cot_empresa: string,cot_numero: string){
     if(confirm('Seguro de eliminar el registro?')){
       this.pedidoService.eliminarPedido(cot_empresa,cot_numero).
-      subscribe(data => { this.toastr.warning('Registro Eliminada', 'El pedido fue eliminado'), 
-                          this.pedidoService.obtenerPedidos();});
+      subscribe(data => { this.toastr.warning('Registro Eliminada', 'El pedido fue eliminado');
+                          this.ngOnInit();                       
+                        }
+                );
     }
   }
 

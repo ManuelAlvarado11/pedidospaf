@@ -31,7 +31,7 @@ export class PedidoService {
   }
 
   //ELIMINAR
-  eliminarPedido(cot_empresa: string,cot_numero: string){
+  eliminarPedido(cot_empresa: string,cot_numero: string): Observable<Pedido>{
     return this.http.delete<Pedido>(this.myAppUrl + this.myApiUrl + cot_empresa +"/"+cot_numero);
   }
 

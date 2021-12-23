@@ -26,7 +26,8 @@ export class PedidoListarComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10,
       lengthMenu : [5, 10, 25],
-      processing: true
+      processing: true,
+      order: []
     };
   }
 

@@ -5,13 +5,9 @@ import { Router } from '@angular/router';
 import { isEmptyObject } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { CnfCorrelativoPedidos } from 'src/app/models/cnfCorrelativoPedidos';
 import { DetallePedido } from 'src/app/models/detallePedido';
-import { numeracionFacturacion } from 'src/app/models/numeracionFacturacion';
 import { Pedido } from 'src/app/models/pedido';
 import { BodegaService } from 'src/app/services/bodega.service';
-import { CorrelativoPedidosService } from 'src/app/services/correlativo-pedidos.service';
-import { NumeracionFacturacionService } from 'src/app/services/numeracion-facturacion.service';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { ProductoService } from 'src/app/services/producto.service';
 import { TipoDocumentoService } from 'src/app/services/tipo-documento.service';
@@ -33,9 +29,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   detalle_pedidos: DetallePedido[] = [];
   total_pedido = 0;
 
-  numPedido!: numeracionFacturacion;
-  numDetalle!: numeracionFacturacion;
-  corrPedido!: CnfCorrelativoPedidos;
   cot_empresa = "";cot_numero = "";numeroDetalle = "";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
@@ -49,14 +42,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               public bodegaService:BodegaService,
               public tipoDocumentoService:TipoDocumentoService,
               public tipoPrecioService: TipoPrecioService,
-              public vendedorService:VendedorService,
-              public numeracionFacturacionService: NumeracionFacturacionService,
-              public correlativoPedidosService: CorrelativoPedidosService) { 
+              public vendedorService:VendedorService) { 
    
     //Declaracion de FormPedido
     this.formPedido = this.formBuilder.group({
       cot_fecha:['',[Validators.required,Validators.maxLength(10)]],
-      cot_pedido:['',[Validators.required,Validators.maxLength(25)]],
+      cot_pedido:[''],
       cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
@@ -119,19 +110,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
     //CARGAR TIPO PRECIOS
     this.tipoPrecioService.obtenerTipoPrecios()
-  
-    //NUMERACION FACTURACION
-    this.numeracionFacturacionService.obtenerNumeracion("fac_pedidos").subscribe(data => {
-      this.numPedido = data;
-      this.numPedido.num_numero = this.numPedido.num_numero + 1
-    });
-    this.numeracionFacturacionService.obtenerNumeracion("fac_detalle_pedidos").subscribe(data => {
-      this.numDetalle = data;
-    });
-    this.correlativoPedidosService.obtenerCorrelativo("01").subscribe(data => {
-      this.corrPedido = data;
-      this.corrPedido.cnf_correlativos = (parseInt(this.corrPedido.cnf_correlativos) + 1).toString();
-    });
     
   }
   
@@ -140,6 +118,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
 
   guardarPedido(){
     if (this.cot_empresa == "" && this.cot_numero == ""){
@@ -152,8 +131,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   agregar(){
     const pedido: Pedido = {
       cot_empresa: this.userSesion.empresa,
-      cot_numero: (this.numPedido.num_numero).toString(),
-      cot_pedido: this.corrPedido.cnf_correlativos,
+      cot_numero: "0",
+      cot_pedido: "0",
       cot_fecha: this.formPedido.get('cot_fecha')?.value,
       cot_vendedor: this.formPedido.get('cot_vendedor')?.value,
       cot_bodega: this.formPedido.get('cot_bodega')?.value,
@@ -168,11 +147,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.toastr.success('Registro Agregado', 'Pedido Agregado Exitosamente');
       this.regresarListado();
     });
-
-    //Actualizar llaves
-    this.numeracionFacturacionService.actualizarNumeracion(this.numPedido).subscribe();
-    this.numeracionFacturacionService.actualizarNumeracion(this.numDetalle).subscribe();
-    this.correlativoPedidosService.actualizarCorrelativo(this.corrPedido).subscribe();
 
   }
 
@@ -198,14 +172,11 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   }
 
   agregarDetalle(){
-    //Incrementamos llave detalle
-    this.numDetalle.num_numero = this.numDetalle.num_numero + 1;
-
     //Creamos nuevo detalle
     const detalle_pedido: DetallePedido={
       dct_empresa: this.userSesion.empresa,
-      dct_cotizacion: (this.numPedido.num_numero).toString(),
-      dct_numero_detalle: (this.numDetalle.num_numero).toString(),
+      dct_cotizacion: "0",
+      dct_numero_detalle: "0",
       dct_producto: this.formPedido.get('formDetalle.dct_producto')!.value,
       dct_cantidad: this.formPedido.get('formDetalle.dct_cantidad')!.value,
       dct_tipo_precio: this.formPedido.get('formDetalle.dct_tipo_precio')!.value,

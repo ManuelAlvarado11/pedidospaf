@@ -53,13 +53,32 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
       cot_nombre:[''],
       cot_direccion :[''],
+      cot_telefono :[''],
+      cot_email :[''],
+      cot_tamaño :[''],
+      cot_exento :[0],
+      cot_extranjero :[0],
       cot_tipo_documento: ['',[Validators.required,Validators.maxLength(25)]],
+      cot_factura:[0],
       formDetalle: this.formBuilder.group({
         dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
         dct_descripcion: [''],
+        dct_bodega: [''],
         dct_cantidad: ['',[Validators.required,Validators.max(10000)]],
         dct_tipo_precio: ['',[Validators.required,Validators.max(10000)]],
-        dct_precio_descuento: ['',[Validators.required,Validators.max(10000)]]
+        dct_precio_lista: [0],
+        dct_tipo_descuento: [''],
+        dct_precio_descuento: [0],
+        dct_valor_lista: [0],
+        dct_valor_descuento: [0],
+        dct_gravada: [0],
+        dct_exenta: [0],
+        dct_iva: [0],
+        dct_descuento: [0],
+        dct_total: [0],
+        dct_costo: [0],
+        dct_tipo_registro: [''],
+        dct_factor: [0],
       })
     });
   }
@@ -79,9 +98,14 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
           cot_bodega: this.pedido.cot_bodega,
           cot_vendedor: this.pedido.cot_vendedor,
           cot_cliente: this.pedido.cot_cliente,  
-          cot_nombre: this.pedido.cliente?.cli_nombre,
-          cot_direccion: this.pedido.cliente?.cli_direccion,
-          cot_tipo_documento: this.pedido.cot_tipo_documento
+          cot_nombre: this.pedido.cot_nombre,
+          cot_direccion: this.pedido.cot_direccion,
+          cot_email: this.pedido.cot_email,
+          cot_tamaño: this.pedido.cot_tamaño,
+          cot_exento: this.pedido.cot_exento,
+          cot_extranjero: this.pedido.cot_extranjero,
+          cot_tipo_documento: this.pedido.cot_tipo_documento,
+          cot_factura: this.pedido.cot_factura
         });
       } 
     });
@@ -92,7 +116,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         this.formPedido.patchValue({
           cot_cliente: data.cli_codigo,
           cot_nombre: data.cli_nombre,
-          cot_direccion: data.cli_direccion
+          cot_direccion: data.cli_direccion,
+          cot_telefono: data.cli_telefono,
+          cot_email: data.cli_email,
+          cot_tamaño: data.cli_tamaño,
+          cot_exento: data.cli_exento,
+          cot_extranjero: data.cli_extrangero
         });
       }
     });
@@ -102,7 +131,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       if(!isEmptyObject(data)){
         this.formPedido.get('formDetalle')!.patchValue({
           dct_producto: data.pro_codigo,
-          dct_descripcion: data.pro_nombre
+          dct_descripcion: data.pro_nombre,
+          dct_factor: data.pro_factor
         });
       }
     });
@@ -145,9 +175,22 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: this.formPedido.get('cot_vendedor')?.value,
       cot_bodega: this.formPedido.get('cot_bodega')?.value,
       cot_cliente: this.formPedido.get('cot_cliente')?.value,
+      cot_nombre: this.formPedido.get('cot_nombre')?.value,
+      cot_direccion: this.formPedido.get('cot_direccion')?. value,
+      cot_telefono: this.formPedido.get('cot_telefono')?.value,
+      cot_email: this.formPedido.get('cot_email')?.value,
+      cot_tamaño: this.formPedido.get('cot_tamaño')?.value,
+      cot_exento: this.formPedido.get('cot_exento')?.value,
+      cot_extranjero: this.formPedido.get('cot_extranjero')?.value,
       cot_tipo_documento: this.formPedido.get('cot_tipo_documento')?.value,
+      cot_gravada: this.total_pedido,
+      cot_iva: 0.0,
+      cot_exenta: 0.0,
+      cot_retencion: 0.0,
+      cot_descuento: 0.0,    
       cot_total: this.total_pedido,
       cot_anulada: false,
+      cot_factura: "",
       detalles: this.detalle_pedidos
     }
    
@@ -167,9 +210,21 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_vendedor: this.formPedido.get('cot_vendedor')!.value,
       cot_bodega: this.formPedido.get('cot_bodega')!.value,
       cot_cliente: this.formPedido.get('cot_cliente')!.value,
+      cot_nombre: this.formPedido.get('cot_nombre')?.value,
+      cot_direccion: this.formPedido.get('cot_direccion')?. value,
+      cot_telefono: this.formPedido.get('cot_telefono')?.value,
+      cot_email: this.formPedido.get('cot_email')?.value,
+      cot_tamaño: this.formPedido.get('cot_tamaño')?.value,
+      cot_exento: this.formPedido.get('cot_exento')?.value,
       cot_tipo_documento: this.formPedido.get('cot_tipo_documento')!.value,
+      cot_gravada: this.total_pedido,
+      cot_iva: 0.0,
+      cot_exenta: 0.0,
+      cot_retencion: 0.0,
+      cot_descuento: 0.0, 
       cot_total: this.total_pedido,
       cot_anulada: false,
+      cot_factura: "",
       detalles: this.detalle_pedidos
     }
 
@@ -185,12 +240,24 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_empresa: this.userSesion.empresa,
       dct_cotizacion: "0",
       dct_numero_detalle: "0",
+      dct_bodega: this.formPedido.get('cot_bodega')!.value,
       dct_producto: this.formPedido.get('formDetalle.dct_producto')!.value,
       dct_cantidad: this.formPedido.get('formDetalle.dct_cantidad')!.value,
+      dct_descripcion: this.formPedido.get('formDetalle.dct_descripcion')!.value,
       dct_tipo_precio: this.formPedido.get('formDetalle.dct_tipo_precio')!.value,
-      dct_precio_lista:0,
+      dct_precio_lista:this.formPedido.get('formDetalle.dct_precio_lista')!.value,
+      dct_tipo_descuento: '',
       dct_precio_descuento: this.formPedido.get('formDetalle.dct_precio_descuento')!.value,
+      dct_valor_lista: 0,
+      dct_valor_descuento: 0,
+      dct_gravada: 0,
+      dct_exenta: 0,
+      dct_iva: 0,
+      dct_descuento: 0,
+      dct_costo: 0,
       dct_total: 0,
+      dct_tipo_registro : 'P',
+      dct_factor: this.formPedido.get('formDetalle.dct_factor')!.value
     }
     
     //Agregar detalle
@@ -235,6 +302,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     }
 
     this.formPedido.get('formDetalle')!.patchValue({
+      dct_precio_lista: precio,
       dct_precio_descuento: precio
     });
   }
@@ -243,7 +311,13 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   calcularTotales(){
     let total = 0.00;
     for(let i=0; i< this.detalle_pedidos.length; i++){
-      this.detalle_pedidos[i].dct_total = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
+      this.detalle_pedidos[i].dct_valor_lista = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_lista;
+      this.detalle_pedidos[i].dct_valor_descuento = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
+      this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento;
+      this.detalle_pedidos[i].dct_iva = 0;
+      this.detalle_pedidos[i].dct_exenta = 0;
+      this.detalle_pedidos[i].dct_descuento = 0;
+      this.detalle_pedidos[i].dct_total = this.detalle_pedidos[i].dct_gravada + this.detalle_pedidos[i].dct_iva + this.detalle_pedidos[i].dct_exenta - this.detalle_pedidos[i].dct_descuento
       total = total + this.detalle_pedidos[i].dct_total;
     } 
 

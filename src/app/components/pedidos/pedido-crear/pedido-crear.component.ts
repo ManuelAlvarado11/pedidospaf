@@ -27,7 +27,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   pedido!: Pedido;
   detalle_pedidos: DetallePedido[] = [];
-  total_pedido = 0;
+  gravada=0;iva = 0;exenta= 0;retencion=0;descuento=0;total = 0; 
 
   cot_empresa = "";cot_numero = "";numeroDetalle = "";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
@@ -87,10 +87,25 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     //CARGAR PEDIDO
     this.pedidoService.obtenerPedido().subscribe(data => { 
       if(!isEmptyObject(data)){
+        
+        if(this.pedidoService.modo == 2){
+          //MODO EDITAR
+          this.formPedido.get('cot_pedido')?.disable();
+        }else if(this.pedidoService.modo == 3){
+          //MODO VER
+          this.formPedido.disable();
+          console.log(this.pedidoService.modo);
+        }
+
         this.pedido=data;
         this.cot_empresa = this.pedido.cot_empresa;
         this.cot_numero = this.pedido.cot_numero;
-        this.total_pedido = this.pedido.cot_total;
+        this.gravada = this.pedido.cot_gravada;
+        this.iva = this.pedido.cot_iva;
+        this.exenta =this.pedido.cot_exenta;
+        this.retencion = this.pedido.cot_retencion;
+        this.descuento = this.pedido.cot_descuento;
+        this.total= this.pedido.cot_total;
         this.detalle_pedidos = this.pedido.detalles;
         this.formPedido.patchValue({
           cot_pedido: this.pedido.cot_pedido,
@@ -183,12 +198,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_exento: this.formPedido.get('cot_exento')?.value,
       cot_extranjero: this.formPedido.get('cot_extranjero')?.value,
       cot_tipo_documento: this.formPedido.get('cot_tipo_documento')?.value,
-      cot_gravada: this.total_pedido,
-      cot_iva: 0.0,
-      cot_exenta: 0.0,
-      cot_retencion: 0.0,
-      cot_descuento: 0.0,    
-      cot_total: this.total_pedido,
+      cot_gravada: this.gravada,
+      cot_iva:this.iva,
+      cot_exenta:this.exenta,
+      cot_retencion: this.retencion,
+      cot_descuento: this.descuento,    
+      cot_total: this.total,
       cot_anulada: false,
       cot_factura: "",
       detalles: this.detalle_pedidos
@@ -217,12 +232,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_tamaño: this.formPedido.get('cot_tamaño')?.value,
       cot_exento: this.formPedido.get('cot_exento')?.value,
       cot_tipo_documento: this.formPedido.get('cot_tipo_documento')!.value,
-      cot_gravada: this.total_pedido,
-      cot_iva: 0.0,
-      cot_exenta: 0.0,
-      cot_retencion: 0.0,
-      cot_descuento: 0.0, 
-      cot_total: this.total_pedido,
+      cot_gravada: this.gravada,
+      cot_iva:this.iva,
+      cot_exenta:this.exenta,
+      cot_retencion: this.retencion,
+      cot_descuento: this.descuento, 
+      cot_total: this.total,
       cot_anulada: false,
       cot_factura: "",
       detalles: this.detalle_pedidos
@@ -309,19 +324,50 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   //Operaciones aritmeticas
   calcularTotales(){
-    let total = 0.00;
+    let gravada=0.00,iva=0.00,exenta=0.00,retencion=0.00,descuento=0.00,total = 0.00;
     for(let i=0; i< this.detalle_pedidos.length; i++){
       this.detalle_pedidos[i].dct_valor_lista = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_lista;
       this.detalle_pedidos[i].dct_valor_descuento = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
-      this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento;
-      this.detalle_pedidos[i].dct_iva = 0;
-      this.detalle_pedidos[i].dct_exenta = 0;
-      this.detalle_pedidos[i].dct_descuento = 0;
+
+      //DESCUENTO
+      if(this.detalle_pedidos[i].dct_valor_lista != this.detalle_pedidos[i].dct_valor_descuento){
+        this.detalle_pedidos[i].dct_descuento = this.detalle_pedidos[i].dct_valor_lista - this.detalle_pedidos[i].dct_valor_descuento;
+      }else{
+        this.detalle_pedidos[i].dct_descuento = 0;
+      }
+
+      //CLIENTE EXENTO
+      if(this.formPedido.get('cot_exento')?.value == 1){
+        this.detalle_pedidos[i].dct_exenta = this.detalle_pedidos[i].dct_valor_descuento;
+        this.detalle_pedidos[i].dct_gravada = 0;
+        this.detalle_pedidos[i].dct_iva = 0;
+      }else{
+        //TIPO DOCUMENTO
+        if (this.formPedido.get('cot_tipo_documento')!.value == 'FAC'){
+          this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento;
+          this.detalle_pedidos[i].dct_iva = 0;
+        }else{
+          this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento/1.13;
+          this.detalle_pedidos[i].dct_iva = this.detalle_pedidos[i].dct_gravada*0.13;
+        }
+        this.detalle_pedidos[i].dct_exenta = 0;
+      }
+
       this.detalle_pedidos[i].dct_total = this.detalle_pedidos[i].dct_gravada + this.detalle_pedidos[i].dct_iva + this.detalle_pedidos[i].dct_exenta - this.detalle_pedidos[i].dct_descuento
+      
+      gravada = gravada + this.detalle_pedidos[i].dct_gravada;
+      iva = iva + this.detalle_pedidos[i].dct_iva;
+      exenta = exenta + this.detalle_pedidos[i].dct_exenta;
+      descuento = descuento + this.detalle_pedidos[i].dct_descuento;
       total = total + this.detalle_pedidos[i].dct_total;
     } 
 
-    this.total_pedido = total;
+    this.gravada = gravada;
+    this.iva = iva;
+    this.exenta = exenta;
+    this.retencion = retencion;
+    this.descuento = descuento;
+    this.total = total;
   }
 
   regresarListado(){

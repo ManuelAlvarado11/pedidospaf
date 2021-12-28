@@ -43,5 +43,11 @@ export class PedidoListarComponent implements OnInit {
 
   editar(pedido: any){
     this.pedidoService.actualizar(pedido);
+    this.pedidoService.modo = 2;
+  }
+
+  ver(pedido: any){
+    this.pedidoService.actualizar(pedido);
+    this.pedidoService.modo = 3;
   }
 }

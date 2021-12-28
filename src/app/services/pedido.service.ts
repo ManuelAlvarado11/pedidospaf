@@ -13,6 +13,7 @@ export class PedidoService {
   myAppUrl = environment.myAppUrl;
   myApiUrl = 'api/fac_pedidos/';
   list!: Pedido[];
+  modo = 0;
   private actualizaFormulario = new BehaviorSubject<Pedido>({} as any);
   private clienteForm = new BehaviorSubject<Cliente>({} as any);
   private productoForm = new BehaviorSubject<Producto>({} as any);

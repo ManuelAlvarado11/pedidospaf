@@ -157,7 +157,18 @@
                     <br><br>
                     <div class="row justify-content-end">
                         <div class="mb-3 col-md-3">
-                            <input [(ngModel)] = "total_pedido" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="gravada">GRAVADA</label>
+                            <input [(ngModel)] = "gravada" id = "gravada" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="iva">IVA</label>
+                            <input [(ngModel)] = "iva" id = "iva" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="exenta">EXENTA</label>
+                            <input [(ngModel)] = "exenta" id = "exenta" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="retencion">RETENCION</label>
+                            <input [(ngModel)] = "retencion" id = "retencion" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="descuento">DESCUENTO</label>
+                            <input [(ngModel)] = "descuento" id = "descuento" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <label for="total">TOTAL</label>
+                            <input [(ngModel)] = "total" id = "total" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
                         </div> 
                     </div>                
                 </div>                        

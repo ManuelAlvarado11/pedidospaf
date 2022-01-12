@@ -85,6 +85,7 @@ export class BuscadorComponent implements OnInit{
       case 2:
         this.pedidoService.seleccionarProducto(item);
         this.productoService.obtenerProducto(item);
+        this.productoService.obtenerReserva(item);
         this.modal.dismissAll();
         break;
     }

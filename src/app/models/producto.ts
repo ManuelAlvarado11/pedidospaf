@@ -15,4 +15,5 @@ export class Producto{
     fac_asignacion_precios!: AsignacionPrecios[];
     fac_existencias_generales!: ExistenciasGenerales[];
     detalles!: DetallePedido[];
+    cantidad_reserva ?: 0;
 }

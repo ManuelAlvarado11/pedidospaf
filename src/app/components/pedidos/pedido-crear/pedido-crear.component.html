@@ -128,7 +128,7 @@
                                     <a class="btn btn-danger" (click)="mostrarReserva()"><i class="fas fa-cancel"></i> Reserva</a>
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label for="cantidad_reserva">Reserva</label>
+                                    <label for="cantidad_reserva">En pedidos</label>
                                     <input [(ngModel)] = "cantidad_reserva" id = "cantidad_reserva" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
                                 </div>
                                 <div class="mb-3 col-md-3">
@@ -136,14 +136,14 @@
                                     <input [(ngModel)] = "existencia_producto" id = "existencia_producto" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
                                 </div> 
                                 <div class="mb-3 col-md-3">
-                                    <label for="diferencia_reserva">Diferencia</label>
-                                    <input [(ngModel)] = "diferencia_reserva" id = "diferencia_reserva" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
+                                    <label for="cantidad_disponible">Disponibles</label>
+                                    <input [(ngModel)] = "cantidad_disponible" id = "cantidad_disponible" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
                                 </div>                
                             </div>
                             <br>
                             <div class="row justify-content-start">
                                 <div class="col">                                                 
-                                    <button (click)="agregarDetalle()" [disabled]="!this.formPedido.get('formDetalle')!.valid" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
+                                    <button (click)="agregarDetalle()" [disabled]="!this.formPedido.get('formDetalle')!.valid || !validarDetalle() "  class="btn btn-primary"><i class="fas fa-plus"></i> Agregar</button>
                                 </div>                                          
                             </div>                                           
                         </div>

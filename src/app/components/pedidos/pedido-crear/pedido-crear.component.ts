@@ -28,7 +28,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
   detalle_pedidos: DetallePedido[] = [];
   gravada=0;iva = 0;exenta= 0;retencion=0;descuento=0;total = 0;
-  cantidad_reserva=0; existencia_producto = 0; diferencia_reserva=0;
+  cantidad_reserva=0; existencia_producto = 0; cantidad_disponible=0;
 
   cot_empresa = "";cot_numero = "";numeroDetalle = "";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
@@ -65,11 +65,11 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         dct_producto: ['',[Validators.required,Validators.maxLength(25)]],
         dct_descripcion: [''],
         dct_bodega: [''],
-        dct_cantidad: ['',[Validators.required,Validators.max(10000)]],
-        dct_tipo_precio: ['',[Validators.required,Validators.max(10000)]],
+        dct_cantidad: ['',[Validators.required,Validators.min(1)]],
+        dct_tipo_precio: ['',[Validators.required]],
         dct_precio_lista: [0],
         dct_tipo_descuento: [''],
-        dct_precio_descuento: [0],
+        dct_precio_descuento: [0,[Validators.required,Validators.min(0.01)]],
         dct_valor_lista: [0],
         dct_valor_descuento: [0],
         dct_gravada: [0],
@@ -278,6 +278,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     
     //Agregar detalle
     this.detalle_pedidos.push(detalle_pedido);
+    console.log(detalle_pedido);
     this.calcularTotales();
     this.formPedido.get('formDetalle')!.reset();
   }
@@ -299,6 +300,16 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.formPedido.get('cot_tipo_documento')!.valid &&
       this.detalle_pedidos.length > 0
     ){
+      valido = true;
+    }
+    return valido;
+  }
+
+  validarDetalle(){
+    let valido = false;
+    let cantidad_detalle = 0
+    
+    if(this.cantidad_disponible >= this.formPedido.get('formDetalle.dct_cantidad')!.value){
       valido = true;
     }
     return valido;
@@ -327,16 +338,22 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   //Mostrar reserva
   mostrarReserva(){
     let existencia = 0;
-    this.cantidad_reserva = this.productoService.cantidad_reserva;
+   
     for(var i = 0; i < this.productoService.producto.fac_existencias_generales.length; i++){
       let bodega = this.productoService.producto.fac_existencias_generales[i].exc_bodega;
-      console.log(bodega)
       if(bodega == "01"){
         existencia = this.productoService.producto.fac_existencias_generales[i].exc_existencia;
       }
     }
     this.existencia_producto = existencia;
-    this.diferencia_reserva = existencia - this.cantidad_reserva;
+    this.cantidad_reserva = this.productoService.cantidad_reserva;
+
+    for(var i= 0; i < this.detalle_pedidos.length; i++){
+      if(this.detalle_pedidos[i].dct_producto == this.formPedido.get('formDetalle.dct_producto')!.value){
+        this.cantidad_reserva = this.cantidad_reserva+this.detalle_pedidos[i].dct_cantidad;
+      }
+    }
+    this.cantidad_disponible = existencia - this.cantidad_reserva;
   }
 
   //Operaciones aritmeticas
@@ -346,12 +363,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       this.detalle_pedidos[i].dct_valor_lista = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_lista;
       this.detalle_pedidos[i].dct_valor_descuento = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
 
-      //DESCUENTO
-      if(this.detalle_pedidos[i].dct_valor_lista != this.detalle_pedidos[i].dct_valor_descuento){
-        this.detalle_pedidos[i].dct_descuento = this.detalle_pedidos[i].dct_valor_lista - this.detalle_pedidos[i].dct_valor_descuento;
-      }else{
-        this.detalle_pedidos[i].dct_descuento = 0;
-      }
+      // //DESCUENTO
+      // if(this.detalle_pedidos[i].dct_valor_lista != this.detalle_pedidos[i].dct_valor_descuento){
+      //   this.detalle_pedidos[i].dct_descuento = this.detalle_pedidos[i].dct_valor_lista - this.detalle_pedidos[i].dct_valor_descuento;
+      // }else{
+      //   this.detalle_pedidos[i].dct_descuento = 0;
+      // }
 
       //CLIENTE EXENTO
       if(this.formPedido.get('cot_exento')?.value == 1){

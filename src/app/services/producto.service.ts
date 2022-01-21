@@ -34,7 +34,7 @@ export class ProductoService {
 
   obtenerReserva(producto: Producto){
     this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa + '/01/' + producto.pro_codigo).
-                  toPromise().then(data => {this.cantidad_reserva = +data });
+                  toPromise().then(data => {this.cantidad_reserva = + data });
   }
 
 }

@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.apiAuthService.login(this.formLogin.value).subscribe(
     data => {
       if(data){
+        console.log(data)
         this.router.navigate(['/']);
         this.toastr.success('Usuario y contraseña correctos','Bienvenido a PAF PEDIDOS WEB')
       }       

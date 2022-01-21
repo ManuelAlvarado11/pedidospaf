@@ -28,9 +28,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
   detalle_pedidos: DetallePedido[] = [];
   gravada=0;iva = 0;exenta= 0;retencion=0;descuento=0;total = 0;
-  cantidad_reserva=0; existencia_producto = 0; cantidad_disponible=0;
+  cantidad_reserva=0; cantidad_existencia = 0; cantidad_disponible=0;
 
-  cot_empresa = "";cot_numero = "";numeroDetalle = "";
+  cot_empresa = "";cot_numero = "";numeroDetalle = "";cot_vendedor = "";
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   //Constructor
@@ -49,7 +49,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.formPedido = this.formBuilder.group({
       cot_fecha:['',[Validators.required,Validators.maxLength(10)]],
       cot_pedido:[''],
-      cot_vendedor: ['',[Validators.required,Validators.maxLength(25)]],
       cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
       cot_nombre:[''],
@@ -95,12 +94,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         }else if(this.pedidoService.modo == 3){
           //MODO VER
           this.formPedido.disable();
-          console.log(this.pedidoService.modo);
         }
 
         this.pedido=data;
         this.cot_empresa = this.pedido.cot_empresa;
         this.cot_numero = this.pedido.cot_numero;
+        this.cot_vendedor = this.pedido.cot_vendedor;
         this.gravada = this.pedido.cot_gravada;
         this.iva = this.pedido.cot_iva;
         this.exenta =this.pedido.cot_exenta;
@@ -108,11 +107,11 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         this.descuento = this.pedido.cot_descuento;
         this.total= this.pedido.cot_total;
         this.detalle_pedidos = this.pedido.detalles;
+       
         this.formPedido.patchValue({
           cot_pedido: this.pedido.cot_pedido,
           cot_fecha: this.datepipe.transform(this.pedido.cot_fecha, 'yyyy-MM-dd'),
           cot_bodega: this.pedido.cot_bodega,
-          cot_vendedor: this.pedido.cot_vendedor,
           cot_cliente: this.pedido.cot_cliente,  
           cot_nombre: this.pedido.cot_nombre,
           cot_direccion: this.pedido.cot_direccion,
@@ -148,16 +147,16 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         this.formPedido.get('formDetalle')!.patchValue({
           dct_producto: data.pro_codigo,
           dct_descripcion: data.pro_nombre,
-          dct_factor: data.pro_factor
+          dct_factor: data.pro_factor,
+          dct_tipo_precio: '0',
+          dct_precio_descuento: 0.00 
         });
+        this.limpiaCampos();
       }
     });
     
     //CARGAR BODEGAS
     this.bodegaService.obtenerBodegas();
-
-    //CARGAR VENDEDORES
-    this.vendedorService.obtenerVendedores()
 
     //CARGAR TIPO DOCUMENTO
     this.tipoDocumentoService.obtenerTipoDocumentos()
@@ -188,7 +187,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_numero: "0",
       cot_pedido: "0",
       cot_fecha: this.formPedido.get('cot_fecha')?.value,
-      cot_vendedor: this.formPedido.get('cot_vendedor')?.value,
+      cot_vendedor:this.userSesion.vendedor.vcn_codigo,
       cot_bodega: this.formPedido.get('cot_bodega')?.value,
       cot_cliente: this.formPedido.get('cot_cliente')?.value,
       cot_nombre: this.formPedido.get('cot_nombre')?.value,
@@ -223,7 +222,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       cot_numero: this.cot_numero,
       cot_pedido: this.formPedido.get('cot_pedido')!.value,
       cot_fecha: this.formPedido.get('cot_fecha')!.value,
-      cot_vendedor: this.formPedido.get('cot_vendedor')!.value,
+      cot_vendedor: this.cot_vendedor,
       cot_bodega: this.formPedido.get('cot_bodega')!.value,
       cot_cliente: this.formPedido.get('cot_cliente')!.value,
       cot_nombre: this.formPedido.get('cot_nombre')?.value,
@@ -278,9 +277,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     
     //Agregar detalle
     this.detalle_pedidos.push(detalle_pedido);
-    console.log(detalle_pedido);
     this.calcularTotales();
     this.formPedido.get('formDetalle')!.reset();
+    this.limpiaCampos();
   }
 
   eliminarDetalle(detalle: DetallePedido){
@@ -295,7 +294,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     if(
 
       this.formPedido.get('cot_bodega')!.valid &&
-      this.formPedido.get('cot_vendedor')!.valid &&
       this.formPedido.get('cot_cliente')!.valid &&
       this.formPedido.get('cot_tipo_documento')!.valid &&
       this.detalle_pedidos.length > 0
@@ -307,7 +305,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
 
   validarDetalle(){
     let valido = false;
-    let cantidad_detalle = 0
     
     if(this.cantidad_disponible >= this.formPedido.get('formDetalle.dct_cantidad')!.value){
       valido = true;
@@ -333,6 +330,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_precio_descuento: precio
     });
     
+    this.mostrarReserva();
+
   }
 
   //Mostrar reserva
@@ -345,7 +344,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         existencia = this.productoService.producto.fac_existencias_generales[i].exc_existencia;
       }
     }
-    this.existencia_producto = existencia;
+    this.cantidad_existencia = existencia;
     this.cantidad_reserva = this.productoService.cantidad_reserva;
 
     for(var i= 0; i < this.detalle_pedidos.length; i++){
@@ -354,6 +353,12 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       }
     }
     this.cantidad_disponible = existencia - this.cantidad_reserva;
+  }
+
+  limpiaCampos(){
+    this.cantidad_disponible = 0;
+    this.cantidad_reserva = 0;
+    this.cantidad_existencia = 0;
   }
 
   //Operaciones aritmeticas
@@ -408,7 +413,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   regresarListado(){
     this.pedidoService.Cancelar();
     this.formPedido.reset();
-    this.cot_empresa = "";this.cot_numero = "";this.numeroDetalle = "";
+    this.cot_empresa = "";this.cot_numero = "";this.numeroDetalle = "";this.cot_vendedor = "";
     this.pedidoService.obtenerPedidos();
     this.route.navigate(['/home/pedidos/listar']);
   }

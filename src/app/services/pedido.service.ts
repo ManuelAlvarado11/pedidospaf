@@ -38,11 +38,11 @@ export class PedidoService {
 
   //LISTAR
   obtenerPedidosEnList(){
-    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa).
+    this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa+"/"+this.userSesion.vendedor.vcn_codigo).
                   toPromise().then(data => { this.list = data as Pedido[]; });
   }
   obtenerPedidos():Observable<any>{
-    return this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa);
+    return this.http.get(this.myAppUrl + this.myApiUrl + this.userSesion.empresa+"/"+this.userSesion.vendedor.vcn_codigo);
   }
 
   //EDITAR PEDIDO

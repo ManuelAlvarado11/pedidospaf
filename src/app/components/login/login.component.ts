@@ -36,14 +36,13 @@ export class LoginComponent implements OnInit {
     this.apiAuthService.login(this.formLogin.value).subscribe(
     data => {
       if(data){
-        console.log(data)
         this.router.navigate(['/']);
-        this.toastr.success('Usuario y contraseña correctos','Bienvenido a PAF PEDIDOS WEB')
+        this.toastr.success('Usuario y contraseña correctos','Bienvenido a PAF PEDIDOS WEB');
       }       
     },
     err => {
       if(err.status == 400){
-        this.toastr.error('Usuario o contraseña Incorrecta','Verifique sus credenciales')
+        this.toastr.error('Comuniquese con soporte tecnico', err.error);
       }
     })
   }

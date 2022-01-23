@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"> -->
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" onload="sinVueltaAtras();" onpageshow="if (event.persisted) sinVueltaAtras();" onunload="" >
   <app-root></app-root>
   <!-- jQuery -->
   <script src="assets/plugins/jquery/jquery.min.js"></script>
@@ -29,6 +29,11 @@
   <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Main -->
   <script src="assets/js/adminlte.js"></script>
+
+  <script type="text/javascript">
+    window.history.forward();
+    function sinVueltaAtras(){ window.history.forward(); }
+  </script>
   
 </body>
 </html>

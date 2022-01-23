@@ -8,6 +8,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
                 </li>
+                <li class="nav-item">
+                    <a class="btn btn-warning" (click)="regresarListado()" [routerLink]="['/home/pedidos/listar']"><i class="fas fa-cancel"></i> Atras</a>
+                </li>
             </ul>
         </div>
         <div class="card-body">                           
@@ -96,7 +99,7 @@
                             <div class="row">
                                 <div class="mb-3 col-md-4">
                                     <label for="dct_cantidad" class="form-label">Cantidad</label>
-                                    <input type="number"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" >
+                                    <input type="number"  class="form-control" id="dct_cantidad" formControlName="dct_cantidad" placeholder="0.00" (change)="cargarPrecioCantidad($event!)">
                                 </div>
                                 <div class="mb-3 col-md-4">
                                     <label for="dct_tipo_precio" class="form-label">Tipo precio</label>
@@ -167,9 +170,9 @@
                     <div class="row justify-content-end">
                         <div class="mb-3 col-md-3">
                             <label for="gravada">GRAVADA</label>
-                            <input [(ngModel)] = "gravada" id = "gravada" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <input [(ngModel)] = "gravada" id = "gravada" [ngModelOptions]="{standalone: true}"  type="number" class="form-control" placeholder="0.00" disabled>
                             <label for="iva">IVA</label>
-                            <input [(ngModel)] = "iva" id = "iva" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
+                            <input [(ngModel)] = "iva" id = "iva" [ngModelOptions]="{standalone: true}"  type="number" class="form-control" placeholder="0.00" disabled>
                             <label for="exenta">EXENTA</label>
                             <input [(ngModel)] = "exenta" id = "exenta" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled>
                             <label for="retencion">RETENCION</label>

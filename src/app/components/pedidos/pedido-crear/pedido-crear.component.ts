@@ -9,6 +9,7 @@ import { DetallePedido } from 'src/app/models/detallePedido';
 import { Pedido } from 'src/app/models/pedido';
 import { BodegaService } from 'src/app/services/bodega.service';
 import { PedidoService } from 'src/app/services/pedido.service';
+import { PreciosCantidadService } from 'src/app/services/precios-cantidad.service';
 import { ProductoService } from 'src/app/services/producto.service';
 import { TipoDocumentoService } from 'src/app/services/tipo-documento.service';
 import { TipoPrecioService } from 'src/app/services/tipo-precio.service';
@@ -43,7 +44,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
               public bodegaService:BodegaService,
               public tipoDocumentoService:TipoDocumentoService,
               public tipoPrecioService: TipoPrecioService,
-              public vendedorService:VendedorService) { 
+              public vendedorService:VendedorService,
+              public preciosCantidadService:PreciosCantidadService) { 
    
     //Declaracion de FormPedido
     this.formPedido = this.formBuilder.group({
@@ -122,6 +124,13 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
           cot_tipo_documento: this.pedido.cot_tipo_documento,
           cot_factura: this.pedido.cot_factura
         });
+      }else{
+        //DEFAULT
+        this.formPedido.patchValue({
+          cot_fecha: this.datepipe.transform(Date.now(), 'yyyy-MM-dd'),
+          cot_bodega: '01',     
+          cot_tipo_documento: 'FAC'     
+        });
       } 
     });
     
@@ -147,6 +156,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         this.formPedido.get('formDetalle')!.patchValue({
           dct_producto: data.pro_codigo,
           dct_descripcion: data.pro_nombre,
+          dct_cantidad:0.00,
           dct_factor: data.pro_factor,
           dct_tipo_precio: '0',
           dct_precio_descuento: 0.00 
@@ -159,10 +169,13 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.bodegaService.obtenerBodegas();
 
     //CARGAR TIPO DOCUMENTO
-    this.tipoDocumentoService.obtenerTipoDocumentos()
+    this.tipoDocumentoService.obtenerTipoDocumentos();
 
     //CARGAR TIPO PRECIOS
-    this.tipoPrecioService.obtenerTipoPrecios()
+    this.tipoPrecioService.obtenerTipoPrecios();
+
+    //CARGAR PRECIOS CANTIDAD
+    this.preciosCantidadService.obtenerPreciosCantidad();
     
   }
   
@@ -312,6 +325,40 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     return valido;
   }
 
+  //PRECIO POR CANTIDAD
+  cargarPrecioCantidad(e: any){
+    let cantidad = e.target.value;
+    let tipoSeleccionado = ''
+    for(var i = 0; i < this.preciosCantidadService.list.length; i++){
+      if(this.preciosCantidadService.list[i].ppc_min <= cantidad && this.preciosCantidadService.list[i].ppc_max >= cantidad){
+        tipoSeleccionado =this.preciosCantidadService.list[i].ppc_tipo_precio;
+      }
+    }
+
+    this.seleccionarPrecioCantidad(tipoSeleccionado)
+    this.mostrarReserva();
+    
+  }
+
+  seleccionarPrecioCantidad(tipoSeleccionado: string){
+    let precio = 0.00;
+   
+    for(var i = 0; i < this.productoService.producto.fac_asignacion_precios.length; i++){
+      let tipoPrecio = this.productoService.producto.fac_asignacion_precios[i].asp_tipo_precio;
+      
+      if(tipoSeleccionado == tipoPrecio){
+        precio = this.productoService.producto.fac_asignacion_precios[i].asp_precio;
+      }
+    }
+
+    this.formPedido.get('formDetalle')!.patchValue({
+      dct_tipo_precio: tipoSeleccionado,
+      dct_precio_lista: precio,
+      dct_precio_descuento: precio
+    });
+  }
+
+
   //Al elegir tipo de precio
   seleccionarPrecio(e: any) {
     let tipoSeleccionado = e.target.value;
@@ -330,8 +377,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       dct_precio_descuento: precio
     });
     
-    this.mostrarReserva();
-
   }
 
   //Mostrar reserva
@@ -348,7 +393,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.cantidad_reserva = this.productoService.cantidad_reserva;
 
     for(var i= 0; i < this.detalle_pedidos.length; i++){
-      if(this.detalle_pedidos[i].dct_producto == this.formPedido.get('formDetalle.dct_producto')!.value){
+      if(this.detalle_pedidos[i].dct_producto == this.formPedido.get('formDetalle.dct_producto')!.value && this.detalle_pedidos[i].dct_numero_detalle == "0" ){
         this.cantidad_reserva = this.cantidad_reserva+this.detalle_pedidos[i].dct_cantidad;
       }
     }
@@ -361,12 +406,17 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.cantidad_existencia = 0;
   }
 
+  roundTo(num: number, places: number) {
+    const factor = 10 ** places;
+    return Math.round(num * factor) / factor;
+  };
+
   //Operaciones aritmeticas
   calcularTotales(){
     let gravada=0.00,iva=0.00,exenta=0.00,retencion=0.00,descuento=0.00,total = 0.00;
     for(let i=0; i< this.detalle_pedidos.length; i++){
-      this.detalle_pedidos[i].dct_valor_lista = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_lista;
-      this.detalle_pedidos[i].dct_valor_descuento = this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento;
+      this.detalle_pedidos[i].dct_valor_lista = this.roundTo(this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_lista,2);
+      this.detalle_pedidos[i].dct_valor_descuento =this.roundTo(this.detalle_pedidos[i].dct_cantidad*this.detalle_pedidos[i].dct_precio_descuento,2);
 
       // //DESCUENTO
       // if(this.detalle_pedidos[i].dct_valor_lista != this.detalle_pedidos[i].dct_valor_descuento){
@@ -386,9 +436,9 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
           this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento;
           this.detalle_pedidos[i].dct_iva = 0;
         }else{
-          this.detalle_pedidos[i].dct_precio_lista = this.detalle_pedidos[i].dct_precio_lista/1.13;
-          this.detalle_pedidos[i].dct_gravada = this.detalle_pedidos[i].dct_valor_descuento/1.13;
-          this.detalle_pedidos[i].dct_iva = this.detalle_pedidos[i].dct_gravada*0.13;
+          this.detalle_pedidos[i].dct_precio_lista = this.roundTo(this.detalle_pedidos[i].dct_precio_lista/1.13,2);
+          this.detalle_pedidos[i].dct_gravada = this.roundTo(this.detalle_pedidos[i].dct_valor_descuento/1.13,2);
+          this.detalle_pedidos[i].dct_iva = this.roundTo(this.detalle_pedidos[i].dct_gravada*0.13,2);
         }
         this.detalle_pedidos[i].dct_exenta = 0;
       }

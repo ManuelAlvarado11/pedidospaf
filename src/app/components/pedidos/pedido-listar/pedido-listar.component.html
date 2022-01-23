@@ -24,12 +24,15 @@
                         <td>{{ pedido.cot_pedido }}</td>                                              
                         <td>{{ pedido.cot_bodega }}</td>
                         <td>{{ pedido.cot_cliente }}</td>
-                        <td>{{ pedido.cot_total }}</td>
-                        <td><span class="badge bg-success">Done</span></td>
+                        <td>{{ pedido.cot_total | number : "1.2" }}</td>
+                        <td>
+                            <span *ngIf = "pedido.cot_factura != ''" class="badge bg-danger">FACTURADO</span>
+                            <span *ngIf = "pedido.cot_factura == ''" class="badge bg-success">PENDIENTE</span>
+                        </td>
                         <td style="text-align: center;">
                             <a [routerLink]="['/home/pedidos/crear']" title="Ver"><i class="fas fa-eye fa-sm mr-3" (click)="ver(pedido)" style="cursor: pointer;"></i></a>
-                            <a [routerLink]="['/home/pedidos/crear']" title="Modificar"><i class="fas fa-edit fa-sm text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i></a>
-                            <i title="Eliminar" class="far fa-trash-alt fa-sm text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero)" style="cursor: pointer;"></i>
+                            <a *ngIf = "pedido.cot_factura == ''" [routerLink]="['/home/pedidos/crear']" title="Modificar"><i class="fas fa-edit fa-sm text-info mr-3" (click)="editar(pedido)" style="cursor: pointer;"></i></a>
+                            <i *ngIf = "pedido.cot_factura == ''" title="Eliminar" class="far fa-trash-alt fa-sm text-danger" (click)="eliminarPedido(pedido.cot_empresa,pedido.cot_numero)" style="cursor: pointer;"></i>
                         </td>
                     </tr>
                 </tbody>

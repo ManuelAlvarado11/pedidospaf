@@ -53,7 +53,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.formPedido = this.formBuilder.group({
       cot_fecha:['',[Validators.required,Validators.maxLength(10)]],
       cot_pedido:[''],
-      cot_bodega: ['',[Validators.required,Validators.maxLength(25)]],
+      cot_bodega: [''],
       cot_cliente: ['',[Validators.required,Validators.maxLength(25)]],
       cot_nombre:[''],
       cot_direccion :[''],
@@ -94,7 +94,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         if(this.pedidoService.modo == 2){
           //MODO EDITAR
           this.formPedido.get('cot_pedido')?.disable();
-          this.formPedido.get('cot_bodega')?.disable();
         }else if(this.pedidoService.modo == 3){
           //MODO VER
           this.formPedido.disable();
@@ -129,7 +128,6 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
       }else{
         //DEFAULT
         this.formPedido.get('cot_pedido')?.disable();
-        this.formPedido.get('cot_bodega')?.disable();
         this.formPedido.patchValue({
           cot_fecha: this.datepipe.transform(Date.now(), 'yyyy-MM-dd'),
           cot_bodega: this.userSesion.confi.fac_puntos_venta.pvt_bodega,     

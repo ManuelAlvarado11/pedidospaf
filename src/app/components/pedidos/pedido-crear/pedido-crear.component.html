@@ -8,9 +8,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#tab-2">Detalle</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="btn btn-warning" (click)="regresarListado()" [routerLink]="['/home/pedidos/listar']"><i class="fas fa-cancel"></i> Atras</a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="card-body">                           
@@ -29,7 +29,7 @@
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="cot_bodega" class="form-label">Bodega</label>
-                                <select class="form-control select2" style="width: 100%;" id="cot_bodega" formControlName="cot_bodega">
+                                <select class="form-control select2" style="width: 100%;" id="cot_bodega" formControlName="cot_bodega" (change)="seleccionarBodega($event)">
                                     <option selected>Seleccione ...</option>
                                     <option [ngValue]="item.bod_codigo" *ngFor="let item of bodegaService.list">
                                         {{ item.bod_descripcion }}
@@ -118,9 +118,6 @@
                             </div>
                             <br>
                             <div class="row">
-                                <!-- <div class="mb-3 col-md-3">
-                                    <a class="btn btn-danger" (click)="mostrarReserva()"><i class="fas fa-cancel"></i> Reserva</a>
-                                </div> -->
                                 <div class="mb-3 col-md-4">
                                     <label for="cantidad_reserva">En pedidos</label>
                                     <input [(ngModel)] = "cantidad_reserva" id = "cantidad_reserva" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
@@ -133,6 +130,11 @@
                                     <label for="cantidad_disponible">Disponibles</label>
                                     <input [(ngModel)] = "cantidad_disponible" id = "cantidad_disponible" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="0.00" disabled> 
                                 </div>                
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <span *ngIf = "this.cantidad_disponible <= 0 && this.formPedido.get('formDetalle.dct_producto')!.value != '' && this.formPedido.get('formDetalle.dct_cantidad')!.value > 0 || !validarDetalle()" class="badge bg-danger">No hay cantidad disponible</span>
+                                </div>
                             </div>
                             <br>
                             <div class="row justify-content-start">

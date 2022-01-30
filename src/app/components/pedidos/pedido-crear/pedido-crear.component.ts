@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup,FormBuilder,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { isEmptyObject } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { Bodega } from 'src/app/models/bodega';
 import { DetallePedido } from 'src/app/models/detallePedido';
 import { Pedido } from 'src/app/models/pedido';
 import { BodegaService } from 'src/app/services/bodega.service';
@@ -32,6 +33,7 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
   cantidad_reserva=0; cantidad_existencia = 0; cantidad_disponible=0;
 
   cot_empresa = "";cot_numero = "";numeroDetalle = "";cot_vendedor = "";
+  bodegaUser!: Bodega;
   userSesion = JSON.parse(localStorage.getItem('usuario')!);
 
   //Constructor
@@ -89,10 +91,10 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     //CARGAR PEDIDO
     this.pedidoService.obtenerPedido().subscribe(data => { 
       if(!isEmptyObject(data)){
-        
         if(this.pedidoService.modo == 2){
           //MODO EDITAR
           this.formPedido.get('cot_pedido')?.disable();
+          this.formPedido.get('cot_bodega')?.disable();
         }else if(this.pedidoService.modo == 3){
           //MODO VER
           this.formPedido.disable();
@@ -126,9 +128,11 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
         });
       }else{
         //DEFAULT
+        this.formPedido.get('cot_pedido')?.disable();
+        this.formPedido.get('cot_bodega')?.disable();
         this.formPedido.patchValue({
           cot_fecha: this.datepipe.transform(Date.now(), 'yyyy-MM-dd'),
-          cot_bodega: '01',     
+          cot_bodega: this.userSesion.confi.fac_puntos_venta.pvt_bodega,     
           cot_tipo_documento: 'FAC'     
         });
       } 
@@ -168,6 +172,17 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     //CARGAR BODEGAS
     this.bodegaService.obtenerBodegas();
 
+    this.bodegaService.obtenerBodegaUser(this.userSesion.confi.fac_puntos_venta.pvt_bodega).subscribe(data => {
+      this.bodegaUser = data;
+      for(var i = 0; i < this.bodegaUser.fac_puntos_venta.fac_cnf_ptovta_cf2.length; i++){
+        if(this.bodegaUser.fac_puntos_venta.fac_cnf_ptovta_cf2[i].cnf_codigo == "14 " && this.bodegaUser.fac_puntos_venta.fac_cnf_ptovta_cf2[i].cnf_activo == false ){
+          this.formPedido.get('formDetalle.dct_tipo_precio')?.disable(); 
+          this.formPedido.get('formDetalle.dct_precio_descuento')?.disable(); 
+        }
+      }
+      
+    });
+
     //CARGAR TIPO DOCUMENTO
     this.tipoDocumentoService.obtenerTipoDocumentos();
 
@@ -183,6 +198,8 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    console.log('Saliste');
+    this.regresarListado();
   }
 
 
@@ -338,6 +355,10 @@ export class PedidoCrearComponent implements OnInit, OnDestroy {
     this.seleccionarPrecioCantidad(tipoSeleccionado)
     this.mostrarReserva();
     
+  }
+
+  seleccionarBodega(e:any){
+    console.log(e);
   }
 
   seleccionarPrecioCantidad(tipoSeleccionado: string){
